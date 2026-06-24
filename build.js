@@ -127,6 +127,18 @@ function cleanHomeLinks($) {
   });
 }
 
+/* Off-brand-Reste der Webflow-Vorlage (exovia/edeldark) aus dem Output entfernen */
+function stripOffBrand($) {
+  // komplette off-brand Sektionen löschen (waren bisher nur per CSS versteckt)
+  $('.section.font, .section.labeled, .section.about-slider, .color-card-wrap, .round-circle-wrap').remove();
+  // Vorlagen-Alt-Texte (Goldkleider/Edel Dark/Webdesign …) durch Marke ersetzen
+  const bad = /edel ?dark|evil dark|gold (dress|gown|satin|ball)|dark theme|web ?design|factor3|business card|hamburg|mood ?board|chandelier|vintage sofa/i;
+  $('img[alt]').each(function () {
+    const a = $(this).attr('alt');
+    if (a && bad.test(a)) $(this).attr('alt', 'The Hiddenqueen');
+  });
+}
+
 /* Robustes Nav-/Preloader-Skript einbinden */
 function injectScript($) {
   if (!$('script[src="js/hq.js"]').length) $('body').append('<script src="js/hq.js"></script>');
@@ -150,6 +162,7 @@ for (const page of fs.readdirSync(SRC)) {
       else el.text(val);
     }
   }
+  stripOffBrand($);
   buildNav($);
   buildFooterLinks($);
   cleanHomeLinks($);
@@ -173,6 +186,7 @@ if (fs.existsSync(libDir)) {
   function shell(title, contentHtml) {
     const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
     $('title').text(title);
+    stripOffBrand($);
     buildNav($);
     buildFooterLinks($);
     injectScript($);

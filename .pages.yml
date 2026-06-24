@@ -61,8 +61,8 @@ content:
       - { name: effect_para_2, label: "Text 2", type: text }
       - { name: colors_heading, label: "Material-Überschrift", type: string }
       - { name: color_para, label: "Material-Text", type: text }
-      - { name: agency_heading, label: "Begleitung-Überschrift", type: string }
-      - { name: agency_para, label: "Begleitung-Text", type: text }
+      - { name: begleitung_heading, label: "Begleitung-Überschrift", type: string }
+      - { name: begleitung_para, label: "Begleitung-Text", type: text }
       - { name: get_in_touch, label: "Button-Text", type: string }
 
   - name: gallery
@@ -74,6 +74,7 @@ content:
       - { name: branding_sub, label: "Unterzeile", type: string }
       - { name: gal_portrait, label: "Galerie – Portrait", type: image }
       - { name: gal_moodboard, label: "Galerie – Moodboard", type: image }
+      - { name: gal_three, label: "Galerie – Detail", type: image }
       - { name: gal_landscape, label: "Galerie – Querformat", type: image }
       - { name: gal_row1, label: "Galerie – Bild Reihe 1", type: image }
       - { name: gal_row2, label: "Galerie – Bild Reihe 2", type: image }
@@ -87,10 +88,10 @@ content:
     path: content/contact.json
     fields:
       - { name: hero_heading, label: "Hero-Überschrift (mit <br>)", type: string }
-      - { name: exovia_heading, label: "Überschrift", type: string }
+      - { name: intro_heading, label: "Überschrift", type: string }
       - { name: direct_label, label: "Label „Direkt“", type: string }
       - { name: general_label, label: "Label „Allgemein“", type: string }
       - { name: address, label: "Adresse (Zeilenumbruch mit <br>)", type: string }
-      - { name: agency_heading, label: "Shop-Hinweis Überschrift", type: string }
-      - { name: agency_para, label: "Shop-Hinweis Text", type: text }
+      - { name: begleitung_heading, label: "Shop-Hinweis Überschrift", type: string }
+      - { name: begleitung_para, label: "Shop-Hinweis Text", type: text }
       - { name: get_in_touch, label: "Button-Text", type: string }

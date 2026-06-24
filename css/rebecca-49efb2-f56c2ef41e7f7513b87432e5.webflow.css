@@ -195,7 +195,6 @@ a {
 
 .menu {
   z-index: 2147483647;
-  background-image: url('../images/imageye___-_imgi_1_bg_background_1imageye___-_imgi_1_bg_background.avif');
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -905,7 +904,7 @@ a {
 
 .big-text {
   -webkit-text-fill-color: transparent;
-  background-image: url('../images/photo_2025-12-06_11-47-17.jpg');
+  background-image: linear-gradient(90deg,#6e4f46,#cf9c8c,#f0d7cc,#cf9c8c,#6e4f46);
   background-position: 50% 0;
   background-size: cover;
   background-attachment: fixed;
@@ -917,7 +916,7 @@ a {
 }
 
 .big-text.contact {
-  background-image: url('../images/tstLetterBg.jpg');
+  background-image: linear-gradient(90deg,#6e4f46,#cf9c8c,#f0d7cc,#cf9c8c,#6e4f46);
   background-position: 0 0;
   width: 100%;
   font-size: 600px;
@@ -2273,12 +2272,7 @@ a {
 
 /* Hidden Queen: Preloader-Reveal in Rosé statt Orange */
 .preloader-text.main-text{color:#cf9c8c !important;}
-/* Off-brand Abschnitte ausblenden (CMYK-Karten + Schrift-Sektion) */
-.section.color .color-card-wrap{display:none !important;}
-.section.font{display:none !important;}
-
-/* Off-brand Galerie-Grafik (Factor3) ausblenden */
-.round-circle-wrap{display:none !important;}
+/* (Off-brand Abschnitte werden im Build entfernt, nicht mehr nur versteckt) */
 
 /* The Queen's Library */
 .ql-page{padding:170px 0 110px;}
@@ -2314,10 +2308,6 @@ a {
 }
 /* Karten-Labels klar sichtbar */
 .branding-card-text{color:#fff !important;opacity:1 !important;}
-/* off-brand About-Sektionen ausblenden (Webdesign Hamburg/Factor3/Hand Coded + Webdesign-Slider) */
-.section.labeled{display:none !important;}
-.section.about-slider{display:none !important;}
-
 /* Mobil: übergroße Laufschrift & Überschriften zähmen */
 @media (max-width:767px){
   .branding-marque-text{font-size:3.4rem !important;}
