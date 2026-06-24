@@ -27,6 +27,22 @@
       if (cs.display === 'none' || cs.opacity === '0' || cs.visibility === 'hidden') e.style.pointerEvents = 'none';
     });
 
+    // 3b) Sicherheitsnetz: Inhalte, die wegen nicht ausgelöster Scroll-Animationen
+    //     unsichtbar (opacity:0) hängenbleiben, garantiert einblenden.
+    function revealStuck() {
+      document.querySelectorAll('section, [class*="section"], h1,h2,h3,h4,p, img, .effect-para, .home-content-para, .branding-card, .slider-image, .about-image-one, .about-image-two').forEach(function (el) {
+        if (el.closest('.preloader, .menu')) return;
+        var cs = getComputedStyle(el);
+        if (parseFloat(cs.opacity) === 0) {
+          el.style.transition = 'opacity .6s ease';
+          el.style.opacity = '1';
+          if (cs.transform !== 'none') el.style.transform = 'none';
+        }
+      });
+    }
+    setTimeout(revealStuck, 2000);
+    window.addEventListener('load', function () { setTimeout(revealStuck, 800); });
+
     // 4) Burger öffnet/schließt das Vollbild-Menü zuverlässig (alte Handler entfernen)
     var menu = document.querySelector('.menu');
     if (menu) {

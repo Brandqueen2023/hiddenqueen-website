@@ -2317,3 +2317,9 @@ a {
 /* off-brand About-Sektionen ausblenden (Webdesign Hamburg/Factor3/Hand Coded + Webdesign-Slider) */
 .section.labeled{display:none !important;}
 .section.about-slider{display:none !important;}
+
+/* Mobil: übergroße Laufschrift & Überschriften zähmen */
+@media (max-width:767px){
+  .branding-marque-text{font-size:3.4rem !important;}
+  .ql-grid{grid-template-columns:1fr !important;}
+}
