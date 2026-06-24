@@ -55,14 +55,24 @@
         document.body.style.overflow = o ? 'hidden' : '';
       };
       set(false);
+      // Burger: Webflow-Interaktion (data-w-id) entfernen + Klon + eigener Handler
       document.querySelectorAll('.hamburger-icon-wrap').forEach(function (b) {
-        var c = b.cloneNode(true);           // Klon entfernt evtl. defekte Webflow-Handler
+        b.removeAttribute('data-w-id');
+        var c = b.cloneNode(true);
         b.parentNode.replaceChild(c, b);
         c.style.pointerEvents = 'auto'; c.style.cursor = 'pointer'; c.style.position = 'relative'; c.style.zIndex = '1001';
         c.addEventListener('click', function (e) { e.preventDefault(); e.stopImmediatePropagation(); set(!open); });
       });
-      menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
-      menu.addEventListener('click', function (e) { if (e.target === menu) set(false); });
+      // Schließen (Capture-Phase, vor Webflow): X-Icon, Hintergrund, Menülinks
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (open && t.closest('.menu-cross-icon, [class*="menu-cross"], [class*="cross-icon"], [class*="menu-close"]')) {
+          e.preventDefault(); e.stopImmediatePropagation(); set(false); return;
+        }
+        if (open && t === menu) { set(false); return; }
+        if (open && menu.contains(t) && t.closest('a')) { set(false); }
+      }, true);
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) set(false); });
     }
   });
