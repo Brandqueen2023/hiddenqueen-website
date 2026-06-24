@@ -2270,3 +2270,12 @@ a {
 
 /* Hidden Queen: Preloader-Text an langen Markennamen anpassen */
 .preloader-text{font-size:clamp(2.2rem,11vw,8.5rem) !important;line-height:1.04 !important;white-space:nowrap;}
+
+/* Hidden Queen: Preloader-Reveal in Rosé statt Orange */
+.preloader-text.main-text{color:#cf9c8c !important;}
+/* Off-brand Abschnitte ausblenden (CMYK-Karten + Schrift-Sektion) */
+.section.color .color-card-wrap{display:none !important;}
+.section.font{display:none !important;}
+
+/* Off-brand Galerie-Grafik (Factor3) ausblenden */
+.round-circle-wrap{display:none !important;}

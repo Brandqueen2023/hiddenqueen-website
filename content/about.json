@@ -1,7 +1,7 @@
 {
   "hero_heading": "Hinter The Hiddenqueen",
   "modern_heading": "Erfahrung, die Vertrauen schafft",
-  "effect_para_1": "The Hiddenqueen entsteht aus drei Perspektiven, die selten zusammenkommen: einem ehemaligen Orion-Model, das die Branche von innen kennt, einer Sexualtherapeutin, die weiß, worauf es bei Nähe wirklich ankommt, und einer Raumgestalterin, die Atmosphäre erschafft.",
+  "effect_para_1": "The Hiddenqueen entsteht aus drei Perspektiven, die selten zusammenkommen: einem ehemaligen Model aus der Branche, das diese Welt von innen kennt, einer Sexualtherapeutin, die weiß, worauf es bei Nähe wirklich ankommt, und einer Raumgestalterin, die Atmosphäre erschafft.",
   "effect_para_2": "Aus dieser Verbindung entsteht etwas Eigenes. Möbel und Räume, die Sinnlichkeit ernst nehmen, ohne laut zu sein. Du wirst persönlich begleitet, vom ersten Gespräch bis zum fertigen Stück.",
   "colors_heading": "Material und Handwerk",
   "color_para": "Wir arbeiten mit Materialien, die halten, was sie versprechen. Unser Kunstleder ist nicht nur schön, sondern desinfektionsmittelbeständig und damit ideal für den professionellen Einsatz. Jedes Stück wird von Hand gefertigt, langlebig und mit Liebe zum Detail.",
@@ -11,13 +11,13 @@
   "get_in_touch": "Projekt besprechen",
   "features_heading": "Wofür wir stehen",
   "features_para": "Qualität vor Quantität. Diskretion in jedem Schritt. Und ein Anspruch an Ästhetik, der sich in jedem Detail zeigt.",
-  "image_one": "/images/hq-3-chair-tall.jpg",
-  "image_two": "/images/hq-4-bed.jpg",
-  "label_image": "/images/hq-5-kneel.jpg",
-  "slider_1": "/images/hq-1-hero.jpg",
-  "slider_2": "/images/hq-2-chair.jpg",
-  "slider_3": "/images/hq-3-chair-tall.jpg",
-  "slider_4": "/images/hq-4-bed.jpg",
-  "slider_5": "/images/hq-5-kneel.jpg",
-  "slider_6": "/images/hq-1-hero.jpg"
+  "image_one": "/images/c-about-one.jpg",
+  "image_two": "/images/c-about-two.jpg",
+  "label_image": "/images/c-about-label.jpg",
+  "slider_1": "/images/c-slider-1.jpg",
+  "slider_2": "/images/c-slider-2.jpg",
+  "slider_3": "/images/c-slider-3.jpg",
+  "slider_4": "/images/c-slider-4.jpg",
+  "slider_5": "/images/c-slider-5.jpg",
+  "slider_6": "/images/c-slider-6.jpg"
 }

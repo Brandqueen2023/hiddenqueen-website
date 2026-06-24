@@ -5,8 +5,8 @@
   "get_in_touch": "Raumkonzept anfragen",
   "branding_heading": "Mehr als ein Möbelstück",
   "branding_sub": "Raumkonzepte. Maßanfertigung. Diskretion.",
-  "hero_image": "/images/hq-1-hero.jpg",
-  "img_emotional": "/images/hq-2-chair.jpg",
-  "img_about": "/images/hq-4-bed.jpg",
-  "img_contact": "/images/hq-5-kneel.jpg"
+  "hero_image": "/images/c-hero.jpg",
+  "img_emotional": "/images/c-emotional.jpg",
+  "img_about": "/images/c-about.jpg",
+  "img_contact": "/images/c-contact.jpg"
 }
