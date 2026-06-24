@@ -47,12 +47,24 @@
     var menu = document.querySelector('.menu');
     if (menu) {
       var open = false;
+      var inner = menu.querySelector('.hamburger-main-wrap') || menu.firstElementChild;
       var set = function (o) {
         open = o;
-        menu.style.display = o ? 'flex' : 'none';
-        menu.style.opacity = o ? '1' : '0';
-        menu.style.pointerEvents = o ? 'auto' : 'none';
-        document.body.style.overflow = o ? 'hidden' : '';
+        if (o) {
+          menu.style.cssText += ';display:flex;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;align-items:center;justify-content:center;opacity:1;visibility:visible;pointer-events:auto;overflow:auto;';
+          // Innenbereich zentrieren (IX2-Initialzustände zurücksetzen)
+          if (inner) { inner.style.cssText += ';position:relative;top:auto;left:auto;transform:none;opacity:1;width:100%;'; }
+          menu.querySelectorAll('.hamburger-list, .hamburger-list-item, .nav-menu.hamburger, a').forEach(function (el) {
+            if (getComputedStyle(el).opacity === '0') el.style.opacity = '1';
+            if (getComputedStyle(el).transform !== 'none') el.style.transform = 'none';
+          });
+          document.body.style.overflow = 'hidden';
+        } else {
+          menu.style.display = 'none';
+          menu.style.opacity = '0';
+          menu.style.pointerEvents = 'none';
+          document.body.style.overflow = '';
+        }
       };
       set(false);
       // Burger: Webflow-Interaktion (data-w-id) entfernen + Klon + eigener Handler
