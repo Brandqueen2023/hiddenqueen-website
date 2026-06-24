@@ -2332,3 +2332,11 @@ a {
   .ql-page .big-container,.ql-page .w-container{max-width:100% !important;padding-left:0 !important;padding-right:0 !important;}
   .ql-intro,.ql-card__title,.ql-card__excerpt,.ql-article{overflow-wrap:anywhere;}
 }
+
+/* Desktop: kein Burger (horizontales Menü reicht). Mobil/Tablet: nur Burger. */
+@media (min-width:992px){
+  .hamburger-icon-wrap, .hamburger-icon-wrap.for-tablet { display:none !important; }
+}
+@media (max-width:991px){
+  .nav-menu-wrapper .nav-menu:not(.hamburger) { display:none !important; }
+}
