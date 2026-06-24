@@ -2323,3 +2323,12 @@ a {
   .branding-marque-text{font-size:3.4rem !important;}
   .ql-grid{grid-template-columns:1fr !important;}
 }
+
+/* Mobil: Queen's Library Überschriften/Container sauber umbrechen */
+@media (max-width:767px){
+  .ql-hero{font-size:1.8rem !important;overflow-wrap:anywhere;}
+  .ql-article__title{font-size:1.5rem !important;overflow-wrap:anywhere;}
+  .ql-page{padding:120px 16px 70px !important;}
+  .ql-page .big-container,.ql-page .w-container{max-width:100% !important;padding-left:0 !important;padding-right:0 !important;}
+  .ql-intro,.ql-card__title,.ql-card__excerpt,.ql-article{overflow-wrap:anywhere;}
+}
