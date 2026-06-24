@@ -2303,3 +2303,17 @@ a {
 .ql-hero,.ql-article__title{font-family:'Cinzel',serif;color:#fff;font-weight:500;line-height:1.1;opacity:1 !important;transform:none !important;}
 .ql-hero{font-size:clamp(2.2rem,5vw,3.6rem);}
 .ql-article__title{font-size:clamp(1.8rem,4vw,2.8rem);}
+
+/* Startseite: Laufschrift blockiert keine Klicks mehr */
+.branding-marque{pointer-events:none;}
+/* Laufschrift mit Rosé-Glanz, besser sichtbar */
+.branding-marque-text{
+  background:linear-gradient(90deg,#6e4f46,#cf9c8c,#f0d7cc,#cf9c8c,#6e4f46);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:.6;text-transform:uppercase;letter-spacing:.04em;
+}
+/* Karten-Labels klar sichtbar */
+.branding-card-text{color:#fff !important;opacity:1 !important;}
+/* off-brand About-Sektionen ausblenden (Webdesign Hamburg/Factor3/Hand Coded + Webdesign-Slider) */
+.section.labeled{display:none !important;}
+.section.about-slider{display:none !important;}
