@@ -40,7 +40,7 @@ function buildNav($) {
   $('.menu').remove();
   const header = `
 <header class="hq-header">
-  <a class="hq-logo" href="index.html"><img src="images/HiddenQueen-Logo.svg" alt="The Hiddenqueen"></a>
+  <a class="hq-logo" href="/"><img src="images/HiddenQueen-Logo.svg" alt="The Hiddenqueen"></a>
   <nav class="hq-nav">
     <a href="gallery.html">${NAV.gal}</a>
     <a href="about.html">${NAV.ueber}</a>
@@ -53,7 +53,7 @@ function buildNav($) {
 <div class="hq-overlay" id="hqOverlay">
   <button class="hq-close" type="button" aria-label="Menü schließen">&times;</button>
   <nav class="hq-overlay-nav">
-    <a href="index.html">Home</a>
+    <a href="/">Home</a>
     <a href="gallery.html">${NAV.gal}</a>
     <a href="about.html">${NAV.ueber}</a>
     <a href="contact.html">${NAV.kontakt}</a>
@@ -111,6 +111,14 @@ function injectMobileNav($) {
   kontakt.length ? kontakt.after(lib + shop) : ul.append(lib + shop);
 }
 
+/* Alle internen Startseiten-Links auf saubere URL "/" setzen (kein index.html) */
+function cleanHomeLinks($) {
+  $('a[href]').each(function () {
+    const h = $(this).attr('href');
+    if (h === 'index.html' || h === './index.html' || h === '/index.html') $(this).attr('href', '/');
+  });
+}
+
 /* Robustes Nav-/Preloader-Skript einbinden */
 function injectScript($) {
   if (!$('script[src="js/hq.js"]').length) $('body').append('<script src="js/hq.js"></script>');
@@ -136,6 +144,7 @@ for (const page of fs.readdirSync(SRC)) {
   }
   buildNav($);
   buildFooterLinks($);
+  cleanHomeLinks($);
   injectScript($);
   bustAssets($);
   fs.writeFileSync(path.join(DIST, page), $.html());
@@ -158,6 +167,7 @@ if (fs.existsSync(libDir)) {
     $('title').text(title);
     buildNav($);
     buildFooterLinks($);
+    cleanHomeLinks($);
     injectScript($);
     bustAssets($);
     $('section').not('.footer').remove();
