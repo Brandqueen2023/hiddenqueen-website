@@ -54,7 +54,3 @@ content:
       - { name: agency_heading, label: "Agentur-Überschrift", type: string }
       - { name: agency_para, label: "Agentur-Text", type: text }
       - { name: get_in_touch, label: "Button-Text", type: string }
-
-  - name: bilder
-    label: Bilder (Medien)
-    type: media
