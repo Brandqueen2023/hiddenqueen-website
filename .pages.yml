@@ -1,0 +1,60 @@
+media:
+  input: images
+  output: /images
+
+content:
+  - name: index
+    label: Startseite
+    type: file
+    path: content/index.json
+    fields:
+      - { name: hero_heading, label: "Hero-Überschrift (Zeilenumbruch mit <br>)", type: string }
+      - { name: section_heading, label: "Abschnitts-Überschrift (mit <br>)", type: string }
+      - { name: home_para, label: "Einleitungstext", type: text }
+      - { name: get_in_touch, label: "Button-Text", type: string }
+      - { name: branding_heading, label: "Erlebnis-Überschrift", type: string }
+      - { name: branding_sub, label: "Erlebnis-Unterzeile", type: string }
+
+  - name: about
+    label: Über
+    type: file
+    path: content/about.json
+    fields:
+      - { name: hero_heading, label: "Hero-Überschrift", type: string }
+      - { name: modern_heading, label: "Überschrift 1", type: string }
+      - { name: effect_para_1, label: "Text 1", type: text }
+      - { name: effect_para_2, label: "Text 2", type: text }
+      - { name: colors_heading, label: "Überschrift Farben", type: string }
+      - { name: color_para, label: "Farben-Text", type: text }
+      - { name: fonts_heading, label: "Überschrift Schriften", type: string }
+      - { name: agency_heading, label: "Agentur-Überschrift", type: string }
+      - { name: agency_para, label: "Agentur-Text", type: text }
+      - { name: get_in_touch, label: "Button-Text", type: string }
+      - { name: features_heading, label: "Features-Überschrift", type: string }
+      - { name: features_para, label: "Features-Text", type: text }
+
+  - name: gallery
+    label: Galerie
+    type: file
+    path: content/gallery.json
+    fields:
+      - { name: hero_heading, label: "Hero-Überschrift", type: string }
+      - { name: branding_sub, label: "Unterzeile", type: string }
+
+  - name: contact
+    label: Kontakt
+    type: file
+    path: content/contact.json
+    fields:
+      - { name: hero_heading, label: "Hero-Überschrift (mit <br>)", type: string }
+      - { name: exovia_heading, label: "Überschrift", type: string }
+      - { name: direct_label, label: "Label „Direkt“", type: string }
+      - { name: general_label, label: "Label „Allgemein“", type: string }
+      - { name: address, label: "Adresse", type: string }
+      - { name: agency_heading, label: "Agentur-Überschrift", type: string }
+      - { name: agency_para, label: "Agentur-Text", type: text }
+      - { name: get_in_touch, label: "Button-Text", type: string }
+
+  - name: bilder
+    label: Bilder (Medien)
+    type: media
