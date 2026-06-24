@@ -58,7 +58,7 @@ module.exports = {
     { key: 'exovia_heading', sel: '.section-heading', idx: 0 },
     { key: 'direct_label',   sel: '.contact-small-heading', idx: 0 },
     { key: 'general_label',  sel: '.contact-small-heading', idx: 1 },
-    { key: 'address',        sel: '.contact-normal-para' },
+    { key: 'address',        sel: '.contact-normal-para', idx: 3, html: true },
     { key: 'agency_heading', sel: '.section-heading', idx: 1 },
     { key: 'agency_para',    sel: '.home-content-para' },
     { key: 'get_in_touch',   sel: '.getstart-text' },

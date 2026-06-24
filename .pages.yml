@@ -3,6 +3,20 @@ media:
   output: /images
 
 content:
+  - name: library
+    label: The Queen's Library (Artikel)
+    type: collection
+    path: content/library
+    filename: '{fields.title}.md'
+    view:
+      fields: [title, date]
+    fields:
+      - { name: title, label: "Titel", type: string }
+      - { name: date, label: "Datum", type: date }
+      - { name: excerpt, label: "Kurzbeschreibung", type: text }
+      - { name: cover, label: "Titelbild", type: image }
+      - { name: body, label: "Inhalt", type: rich-text }
+
   - name: index
     label: Startseite
     type: file

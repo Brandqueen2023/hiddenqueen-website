@@ -2279,3 +2279,27 @@ a {
 
 /* Off-brand Galerie-Grafik (Factor3) ausblenden */
 .round-circle-wrap{display:none !important;}
+
+/* The Queen's Library */
+.ql-page{padding:170px 0 110px;}
+.ql-hero{margin-bottom:.25em;}
+.ql-intro{max-width:640px;margin-bottom:60px;}
+.ql-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:46px;}
+.ql-card{display:block;color:inherit;text-decoration:none;}
+.ql-card__img{display:block;aspect-ratio:3/2;background-size:cover;background-position:center;margin-bottom:20px;transition:opacity .3s;}
+.ql-card:hover .ql-card__img{opacity:.85;}
+.ql-card__date,.ql-article__date{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#cf9c8c;margin-bottom:10px;}
+.ql-card__title{display:block;font-family:'Cinzel',serif;font-size:1.55rem;line-height:1.2;margin-bottom:12px;}
+.ql-card__excerpt{display:block;color:rgba(255,255,255,.7);line-height:1.6;}
+.ql-article-wrap{max-width:780px;margin:0 auto;}
+.ql-back{display:inline-block;color:#cf9c8c;text-decoration:none;margin-bottom:34px;font-size:.85rem;letter-spacing:.05em;}
+.ql-article__title{margin-bottom:30px;}
+.ql-article__cover{display:block;aspect-ratio:16/9;background-size:cover;background-position:center;margin-bottom:44px;}
+.ql-article{font-size:1.12rem;line-height:1.9;}
+.ql-article h2{font-family:'Cinzel',serif;font-size:1.55rem;margin:1.7em 0 .5em;}
+.ql-article p{margin-bottom:1.3em;}
+.ql-article a{color:#cf9c8c;}
+@media(max-width:767px){.ql-grid{grid-template-columns:1fr;gap:36px;}.ql-page{padding:130px 0 80px;}}
+.ql-hero,.ql-article__title{font-family:'Cinzel',serif;color:#fff;font-weight:500;line-height:1.1;opacity:1 !important;transform:none !important;}
+.ql-hero{font-size:clamp(2.2rem,5vw,3.6rem);}
+.ql-article__title{font-size:clamp(1.8rem,4vw,2.8rem);}
