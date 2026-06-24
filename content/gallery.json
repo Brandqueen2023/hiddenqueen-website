@@ -1,12 +1,12 @@
 {
-  "hero_heading": "Gallery",
-  "branding_sub": "of Impressions",
-  "gal_portrait": "/images/imgi_3_women-gold-black-portrait-1-1280.png",
-  "gal_moodboard": "/images/imageye___-_imgi_4_style-moodbord-edeldark-dark_1imageye___-_imgi_4_style-moodbord-edeldark-dark.avif",
-  "gal_landscape": "/images/imgi_5_women-gold-black-landscape-2-1920.png",
-  "gal_row1": "/images/imageye___-_imgi_5_ferrero2-1920_1imageye___-_imgi_5_ferrero2-1920.avif",
-  "gal_row2": "/images/photo_2025-12-05_15-06-42.jpg",
-  "gal_row3": "/images/imgi_8_visitenKartenNeu2.png",
-  "gal_row4": "/images/imgi_9_visitenkarte_frontal-1920.png",
-  "gal_row5": "/images/imgi_10_pattern.png"
+  "hero_heading": "Galerie",
+  "branding_sub": "Einblicke, die andeuten",
+  "gal_portrait": "/images/hq-2-chair.jpg",
+  "gal_moodboard": "/images/hq-4-bed.jpg",
+  "gal_landscape": "/images/hq-1-hero.jpg",
+  "gal_row1": "/images/hq-3-chair-tall.jpg",
+  "gal_row2": "/images/hq-5-kneel.jpg",
+  "gal_row3": "/images/hq-1-hero.jpg",
+  "gal_row4": "/images/hq-2-chair.jpg",
+  "gal_row5": "/images/hq-4-bed.jpg"
 }
