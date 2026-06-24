@@ -111,11 +111,19 @@ function injectMobileNav($) {
   kontakt.length ? kontakt.after(lib + shop) : ul.append(lib + shop);
 }
 
-/* Alle internen Startseiten-Links auf saubere URL "/" setzen (kein index.html) */
+/* Interne Links extensionslos machen: index.html → "/", gallery.html → "/gallery" usw. */
 function cleanHomeLinks($) {
   $('a[href]').each(function () {
-    const h = $(this).attr('href');
-    if (h === 'index.html' || h === './index.html' || h === '/index.html') $(this).attr('href', '/');
+    let h = $(this).attr('href');
+    if (!h) return;
+    // nur lokale .html-Links (keine externen, keine Anker/Mailto)
+    if (/^(https?:|mailto:|tel:|#|\/\/)/i.test(h)) return;
+    h = h.replace(/^\.?\//, ''); // führendes ./ oder / entfernen
+    const m = h.match(/^([^?#]+)\.html(\?[^#]*)?(#.*)?$/i);
+    if (!m) return;
+    const name = m[1].replace(/^\/+/, '');
+    const rest = (m[2] || '') + (m[3] || '');
+    $(this).attr('href', (name === 'index' ? '/' : '/' + name) + rest);
   });
 }
 
@@ -167,11 +175,11 @@ if (fs.existsSync(libDir)) {
     $('title').text(title);
     buildNav($);
     buildFooterLinks($);
-    cleanHomeLinks($);
     injectScript($);
     bustAssets($);
     $('section').not('.footer').remove();
     $('section.footer').before(contentHtml);
+    cleanHomeLinks($); // nach dem Einfügen, damit auch Artikel-/Karten-Links sauber sind
     return $.html();
   }
 
