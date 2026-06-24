@@ -4,5 +4,8 @@
   "nav_ueber": "Über",
   "nav_kontakt": "Kontakt",
   "nav_library": "Library",
-  "nav_shop": "Shop"
+  "nav_shop": "Shop",
+  "impressum_url": "https://brandqueen.de/impressum",
+  "datenschutz_url": "https://brandqueen.de/datenschutzerklarung",
+  "agb_url": "https://brandqueen.de/agb"
 }

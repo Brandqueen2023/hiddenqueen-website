@@ -64,6 +64,23 @@ function buildNav($) {
   $('body').prepend(header);
 }
 
+/* Footer-Rechtslinks setzen (Impressum/Datenschutz/AGB → Brand Queen) */
+function buildFooterLinks($) {
+  const imp = SET.impressum_url || 'https://brandqueen.de/impressum';
+  const dat = SET.datenschutz_url || 'https://brandqueen.de/datenschutzerklarung';
+  const agb = SET.agb_url || 'https://brandqueen.de/agb';
+  $('.footer-item-text').each(function () {
+    const t = $(this).text().trim().toLowerCase();
+    if (t.indexOf('impressum') === 0) $(this).attr('href', imp).attr('target', '_blank').attr('rel', 'noopener');
+    if (t.indexOf('datenschutz') === 0) $(this).attr('href', dat).attr('target', '_blank').attr('rel', 'noopener');
+  });
+  const wrap = $('.footer-item-wrap').first();
+  if (wrap.length && wrap.find('a').filter(function () { return $(this).text().trim().toUpperCase() === 'AGB'; }).length === 0) {
+    wrap.find('.footer-item-text').removeClass('border-none');
+    wrap.append('<a href="' + agb + '" target="_blank" rel="noopener" class="footer-item-text border-none">AGB</a>');
+  }
+}
+
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 
@@ -118,6 +135,7 @@ for (const page of fs.readdirSync(SRC)) {
     }
   }
   buildNav($);
+  buildFooterLinks($);
   injectScript($);
   bustAssets($);
   fs.writeFileSync(path.join(DIST, page), $.html());
@@ -139,6 +157,7 @@ if (fs.existsSync(libDir)) {
     const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
     $('title').text(title);
     buildNav($);
+    buildFooterLinks($);
     injectScript($);
     bustAssets($);
     $('section').not('.footer').remove();
