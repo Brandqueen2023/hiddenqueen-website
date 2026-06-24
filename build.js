@@ -20,6 +20,37 @@ function bustAssets($) {
   $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
 }
 
+/* Altes Webflow-Menü entfernen und eigenes, einfaches Menü einsetzen */
+const SHOP_URL = 'https://hiddenqueen-2.myshopify.com';
+function buildNav($) {
+  $('.navbar').remove();
+  $('.menu').remove();
+  const header = `
+<header class="hq-header">
+  <a class="hq-logo" href="index.html"><img src="images/HiddenQueen-Logo.svg" alt="The Hiddenqueen"></a>
+  <nav class="hq-nav">
+    <a href="gallery.html">Galerie</a>
+    <a href="about.html">Über</a>
+    <a href="contact.html">Kontakt</a>
+    <a href="library.html">Library</a>
+    <a class="hq-shop" href="${SHOP_URL}">Shop</a>
+  </nav>
+  <button class="hq-burger" type="button" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+</header>
+<div class="hq-overlay" id="hqOverlay">
+  <button class="hq-close" type="button" aria-label="Menü schließen">&times;</button>
+  <nav class="hq-overlay-nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Galerie</a>
+    <a href="about.html">Über</a>
+    <a href="contact.html">Kontakt</a>
+    <a href="library.html">Library</a>
+    <a href="${SHOP_URL}">Shop</a>
+  </nav>
+</div>`;
+  $('body').prepend(header);
+}
+
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 
@@ -73,8 +104,7 @@ for (const page of fs.readdirSync(SRC)) {
       else el.text(val);
     }
   }
-  injectLibraryNav($);
-  injectMobileNav($);
+  buildNav($);
   injectScript($);
   bustAssets($);
   fs.writeFileSync(path.join(DIST, page), $.html());
@@ -95,8 +125,7 @@ if (fs.existsSync(libDir)) {
   function shell(title, contentHtml) {
     const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
     $('title').text(title);
-    injectLibraryNav($);
-    injectMobileNav($);
+    buildNav($);
     injectScript($);
     bustAssets($);
     $('section').not('.footer').remove();
