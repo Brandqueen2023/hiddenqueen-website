@@ -20,8 +20,21 @@ function bustAssets($) {
   $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
 }
 
+/* Einstellungen (Menü-Namen + Shop-URL) aus content/settings.json */
+function readSettings() {
+  try { return JSON.parse(fs.readFileSync(path.join(SRC, 'content', 'settings.json'), 'utf8')); } catch (e) { return {}; }
+}
+const SET = readSettings();
+const SHOP_URL = SET.shop_url || 'https://hiddenqueen-2.myshopify.com';
+const NAV = {
+  gal: SET.nav_galerie || 'Galerie',
+  ueber: SET.nav_ueber || 'Über',
+  kontakt: SET.nav_kontakt || 'Kontakt',
+  lib: SET.nav_library || 'Library',
+  shop: SET.nav_shop || 'Shop'
+};
+
 /* Altes Webflow-Menü entfernen und eigenes, einfaches Menü einsetzen */
-const SHOP_URL = 'https://hiddenqueen-2.myshopify.com';
 function buildNav($) {
   $('.navbar').remove();
   $('.menu').remove();
@@ -29,11 +42,11 @@ function buildNav($) {
 <header class="hq-header">
   <a class="hq-logo" href="index.html"><img src="images/HiddenQueen-Logo.svg" alt="The Hiddenqueen"></a>
   <nav class="hq-nav">
-    <a href="gallery.html">Galerie</a>
-    <a href="about.html">Über</a>
-    <a href="contact.html">Kontakt</a>
-    <a href="library.html">Library</a>
-    <a class="hq-shop" href="${SHOP_URL}">Shop</a>
+    <a href="gallery.html">${NAV.gal}</a>
+    <a href="about.html">${NAV.ueber}</a>
+    <a href="contact.html">${NAV.kontakt}</a>
+    <a href="library.html">${NAV.lib}</a>
+    <a class="hq-shop" href="${SHOP_URL}">${NAV.shop}</a>
   </nav>
   <button class="hq-burger" type="button" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
 </header>
@@ -41,11 +54,11 @@ function buildNav($) {
   <button class="hq-close" type="button" aria-label="Menü schließen">&times;</button>
   <nav class="hq-overlay-nav">
     <a href="index.html">Home</a>
-    <a href="gallery.html">Galerie</a>
-    <a href="about.html">Über</a>
-    <a href="contact.html">Kontakt</a>
-    <a href="library.html">Library</a>
-    <a href="${SHOP_URL}">Shop</a>
+    <a href="gallery.html">${NAV.gal}</a>
+    <a href="about.html">${NAV.ueber}</a>
+    <a href="contact.html">${NAV.kontakt}</a>
+    <a href="library.html">${NAV.lib}</a>
+    <a href="${SHOP_URL}">${NAV.shop}</a>
   </nav>
 </div>`;
   $('body').prepend(header);
