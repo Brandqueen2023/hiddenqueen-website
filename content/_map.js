@@ -59,7 +59,7 @@ module.exports = {
     { key: 'intro_heading', sel: '.section-heading', idx: 0 },
     { key: 'direct_label',   sel: '.contact-small-heading', idx: 0 },
     { key: 'general_label',  sel: '.contact-small-heading', idx: 1 },
-    { key: 'address',        sel: '.contact-normal-para', idx: 3, html: true },
+    { key: 'address',        sel: '.contact-normal-para', idx: 2, html: true },
     { key: 'begleitung_heading', sel: '.section-heading', idx: 1 },
     { key: 'begleitung_para',    sel: '.home-content-para' },
     { key: 'get_in_touch',   sel: '.getstart-text' },
