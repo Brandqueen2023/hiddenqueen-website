@@ -33,6 +33,21 @@ function injectLibraryNav($) {
   }
 }
 
+/* Burger-Vollbildmenü um Library + Shop ergänzen */
+function injectMobileNav($) {
+  const ul = $('.nav-menu.hamburger').first();
+  if (!ul.length || ul.find('a[href="library.html"]').length) return;
+  const kontakt = ul.find('.hamburger-list').filter((i, el) => $(el).find('a[href*="contact.html"]').length).first();
+  const lib = '<li class="hamburger-list"><a href="library.html" class="hamburger-item-wrap w-inline-block"><h2 class="hamburger-list-item">Library</h2></a></li>';
+  const shop = '<li class="hamburger-list"><a href="https://hiddenqueen-2.myshopify.com" class="hamburger-item-wrap w-inline-block"><h2 class="hamburger-list-item">Shop</h2></a></li>';
+  kontakt.length ? kontakt.after(lib + shop) : ul.append(lib + shop);
+}
+
+/* Robustes Nav-/Preloader-Skript einbinden */
+function injectScript($) {
+  if (!$('script[src="js/hq.js"]').length) $('body').append('<script src="js/hq.js"></script>');
+}
+
 /* HTML-Seiten verarbeiten (Inhalte einspielen) */
 for (const page of fs.readdirSync(SRC)) {
   if (!page.endsWith('.html')) continue;
@@ -52,6 +67,8 @@ for (const page of fs.readdirSync(SRC)) {
     }
   }
   injectLibraryNav($);
+  injectMobileNav($);
+  injectScript($);
   fs.writeFileSync(path.join(DIST, page), $.html());
   console.log('✓', page);
 }
@@ -71,6 +88,8 @@ if (fs.existsSync(libDir)) {
     const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
     $('title').text(title);
     injectLibraryNav($);
+    injectMobileNav($);
+    injectScript($);
     $('section').not('.footer').remove();
     $('section.footer').before(contentHtml);
     return $.html();
