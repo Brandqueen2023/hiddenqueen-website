@@ -1,16 +1,22 @@
 /**
  * Zuordnung: Inhaltsfeld (key) → Stelle im Webflow-HTML (CSS-Selektor).
  * html:true erlaubt Zeilenumbrüche (<br>), sonst reiner Text.
- * Wird sowohl vom Build (build.js) als auch vom Editor-Schema genutzt.
+ * attr:'src' + dropSrcset:true → Bild austauschen (Vorschau-Feld im Editor).
  */
+const img = (key, sel, idx = 0) => ({ key, sel, idx, attr: 'src', dropSrcset: true });
+
 module.exports = {
   'index.html': [
-    { key: 'hero_heading',   sel: '.hero-heading',         html: true },
-    { key: 'section_heading',sel: '.section-heading',       html: true },
-    { key: 'home_para',      sel: '.home-content-para' },
-    { key: 'get_in_touch',   sel: '.getstart-text' },
+    { key: 'hero_heading',    sel: '.hero-heading',         html: true },
+    { key: 'section_heading', sel: '.section-heading',       html: true },
+    { key: 'home_para',       sel: '.home-content-para' },
+    { key: 'get_in_touch',    sel: '.getstart-text' },
     { key: 'branding_heading',sel: '.branding-heading' },
-    { key: 'branding_sub',   sel: '.branding-sub-heading' },
+    { key: 'branding_sub',    sel: '.branding-sub-heading' },
+    img('hero_image',     '.home-hero-image'),
+    img('img_emotional',  '.home-geallary-image', 0),
+    img('img_about',      '.home-geallary-image', 1),
+    img('img_contact',    '.home-geallary-image', 2),
   ],
   'about.html': [
     { key: 'hero_heading',   sel: '.hero-heading',   html: true },
@@ -25,10 +31,27 @@ module.exports = {
     { key: 'get_in_touch',   sel: '.getstart-text' },
     { key: 'features_heading',sel: '.section-heading', idx: 4 },
     { key: 'features_para',  sel: '.home-content-para', idx: 1 },
+    img('image_one', '.about-image-one'),
+    img('image_two', '.about-image-two'),
+    img('label_image', '.label-image'),
+    img('slider_1', '.slider-image', 0),
+    img('slider_2', '.slider-image', 1),
+    img('slider_3', '.slider-image', 2),
+    img('slider_4', '.slider-image', 3),
+    img('slider_5', '.slider-image', 4),
+    img('slider_6', '.slider-image', 5),
   ],
   'gallery.html': [
     { key: 'hero_heading', sel: '.hero-heading' },
     { key: 'branding_sub', sel: '.branding-sub-heading' },
+    img('gal_portrait', '.gellary-one'),
+    img('gal_moodboard','.home-geallary-image.about'),
+    img('gal_landscape','.g4'),
+    img('gal_row1', '.row1'),
+    img('gal_row2', '.row2'),
+    img('gal_row3', '.row3'),
+    img('gal_row4', '.row4'),
+    img('gal_row5', '.row5'),
   ],
   'contact.html': [
     { key: 'hero_heading',   sel: '.hero-heading',   html: true },

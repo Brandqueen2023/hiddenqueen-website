@@ -9,11 +9,15 @@ content:
     path: content/index.json
     fields:
       - { name: hero_heading, label: "Hero-Überschrift (Zeilenumbruch mit <br>)", type: string }
+      - { name: hero_image, label: "Hero-Bild (großes Bild oben)", type: image }
       - { name: section_heading, label: "Abschnitts-Überschrift (mit <br>)", type: string }
       - { name: home_para, label: "Einleitungstext", type: text }
       - { name: get_in_touch, label: "Button-Text", type: string }
       - { name: branding_heading, label: "Erlebnis-Überschrift", type: string }
       - { name: branding_sub, label: "Erlebnis-Unterzeile", type: string }
+      - { name: img_emotional, label: "Bild 1 – Emotional Branding", type: image }
+      - { name: img_about, label: "Bild 2 – Über", type: image }
+      - { name: img_contact, label: "Bild 3 – Kontakt", type: image }
 
   - name: about
     label: Über
@@ -21,17 +25,26 @@ content:
     path: content/about.json
     fields:
       - { name: hero_heading, label: "Hero-Überschrift", type: string }
+      - { name: image_one, label: "Bild 1 (Moodboard)", type: image }
+      - { name: image_two, label: "Bild 2 (Portrait)", type: image }
       - { name: modern_heading, label: "Überschrift 1", type: string }
       - { name: effect_para_1, label: "Text 1", type: text }
       - { name: effect_para_2, label: "Text 2", type: text }
       - { name: colors_heading, label: "Überschrift Farben", type: string }
       - { name: color_para, label: "Farben-Text", type: text }
       - { name: fonts_heading, label: "Überschrift Schriften", type: string }
+      - { name: label_image, label: "Bild (Raum/Label)", type: image }
       - { name: agency_heading, label: "Agentur-Überschrift", type: string }
       - { name: agency_para, label: "Agentur-Text", type: text }
       - { name: get_in_touch, label: "Button-Text", type: string }
       - { name: features_heading, label: "Features-Überschrift", type: string }
       - { name: features_para, label: "Features-Text", type: text }
+      - { name: slider_1, label: "Slider-Bild 1", type: image }
+      - { name: slider_2, label: "Slider-Bild 2", type: image }
+      - { name: slider_3, label: "Slider-Bild 3", type: image }
+      - { name: slider_4, label: "Slider-Bild 4", type: image }
+      - { name: slider_5, label: "Slider-Bild 5", type: image }
+      - { name: slider_6, label: "Slider-Bild 6", type: image }
 
   - name: gallery
     label: Galerie
@@ -40,6 +53,14 @@ content:
     fields:
       - { name: hero_heading, label: "Hero-Überschrift", type: string }
       - { name: branding_sub, label: "Unterzeile", type: string }
+      - { name: gal_portrait, label: "Galerie – Portrait", type: image }
+      - { name: gal_moodboard, label: "Galerie – Moodboard", type: image }
+      - { name: gal_landscape, label: "Galerie – Querformat", type: image }
+      - { name: gal_row1, label: "Galerie – Bild Reihe 1", type: image }
+      - { name: gal_row2, label: "Galerie – Bild Reihe 2", type: image }
+      - { name: gal_row3, label: "Galerie – Bild Reihe 3", type: image }
+      - { name: gal_row4, label: "Galerie – Bild Reihe 4", type: image }
+      - { name: gal_row5, label: "Galerie – Bild Reihe 5", type: image }
 
   - name: contact
     label: Kontakt
