@@ -12,6 +12,13 @@ const { marked } = require('marked');
 const SRC = __dirname;
 const DIST = path.join(SRC, 'dist');
 const MAP = require('./content/_map.js');
+const BUILDID = Date.now(); // Cache-Buster: bei jedem Build neu
+
+/* Versioniert lokale CSS/JS-Verweise, damit Browser nie alte Dateien cachen */
+function bustAssets($) {
+  $('link[rel="stylesheet"]').each(function () { const h = $(this).attr('href'); if (h && /^css\//.test(h) && h.indexOf('?') === -1) $(this).attr('href', h + '?v=' + BUILDID); });
+  $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
+}
 
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
@@ -69,6 +76,7 @@ for (const page of fs.readdirSync(SRC)) {
   injectLibraryNav($);
   injectMobileNav($);
   injectScript($);
+  bustAssets($);
   fs.writeFileSync(path.join(DIST, page), $.html());
   console.log('✓', page);
 }
@@ -90,6 +98,7 @@ if (fs.existsSync(libDir)) {
     injectLibraryNav($);
     injectMobileNav($);
     injectScript($);
+    bustAssets($);
     $('section').not('.footer').remove();
     $('section.footer').before(contentHtml);
     return $.html();
