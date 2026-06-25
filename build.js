@@ -1,7 +1,15 @@
 /**
- * Build: spielt Inhalte (content/*.json) ins Webflow-HTML (Design 1:1),
- * generiert "The Queen's Library" (Übersicht + Artikelseiten aus content/library/*.md).
+ * Build: spielt Inhalte ins Webflow-HTML (Design 1:1),
+ * generiert "The Queen's Library" (Übersicht + Artikelseiten).
  * Ausgabe nach dist/. CSS/JS/Bilder werden kopiert.
+ *
+ * INHALTSQUELLE:
+ *   1. WordPress (wenn Umgebungsvariable WP_CONTENT_URL gesetzt ist) —
+ *      Sabrina pflegt alles im WordPress, der REST-Endpoint /wp-json/hq/v1/content
+ *      liefert sämtliche Texte/Bilder/Artikel als JSON.
+ *   2. Fallback: lokale content/*.json + content/library/*.md
+ *      (greift automatisch, falls WordPress nicht erreichbar ist —
+ *      so bricht NIE ein Deploy, die Seite bleibt mit dem letzten Stand online).
  */
 const fs = require('fs');
 const path = require('path');
@@ -14,25 +22,119 @@ const DIST = path.join(SRC, 'dist');
 const MAP = require('./content/_map.js');
 const BUILDID = Date.now(); // Cache-Buster: bei jedem Build neu
 
+// Wird in main() befüllt (aus WordPress oder lokal)
+let SET = {};
+let SHOP_URL = 'https://hiddenqueen-2.myshopify.com';
+let NAV = {};
+
+/* ----------------------------------------------------------------------------
+ * INHALTE LADEN — WordPress mit Fallback auf lokale Dateien
+ * ------------------------------------------------------------------------- */
+
+/* Lokale Inhalte (Fallback / Standard) im einheitlichen Format einlesen */
+function loadLocal() {
+  const pages = {};
+  for (const page of Object.keys(MAP)) {
+    const jsonPath = path.join(SRC, 'content', page.replace('.html', '.json'));
+    if (fs.existsSync(jsonPath)) {
+      try { pages[page] = JSON.parse(fs.readFileSync(jsonPath, 'utf8')); }
+      catch (e) { pages[page] = {}; }
+    } else {
+      pages[page] = {};
+    }
+  }
+
+  let settings = {};
+  try { settings = JSON.parse(fs.readFileSync(path.join(SRC, 'content', 'settings.json'), 'utf8')); }
+  catch (e) { settings = {}; }
+
+  const library = [];
+  const libDir = path.join(SRC, 'content', 'library');
+  if (fs.existsSync(libDir)) {
+    for (const f of fs.readdirSync(libDir).filter(f => f.endsWith('.md'))) {
+      const g = matter(fs.readFileSync(path.join(libDir, f), 'utf8'));
+      library.push({
+        slug: f.replace(/\.md$/, ''),
+        title: g.data.title,
+        date: g.data.date,
+        excerpt: g.data.excerpt,
+        cover: g.data.cover,
+        bodyHtml: marked.parse(g.content || ''),
+      });
+    }
+  }
+
+  return { settings, pages, library };
+}
+
+/* WordPress-Inhalte über die lokalen legen (WP gewinnt, leere Werte ignorieren) */
+function mergeWp(local, wp) {
+  const out = { settings: { ...local.settings }, pages: {}, library: local.library };
+
+  // Einstellungen
+  if (wp.settings && typeof wp.settings === 'object') {
+    for (const [k, v] of Object.entries(wp.settings)) {
+      if (v != null && v !== '') out.settings[k] = v;
+    }
+  }
+
+  // Seiten-Felder
+  for (const page of Object.keys(MAP)) {
+    out.pages[page] = { ...(local.pages[page] || {}) };
+    const wpPage = wp.pages && wp.pages[page];
+    if (wpPage && typeof wpPage === 'object') {
+      for (const [k, v] of Object.entries(wpPage)) {
+        if (v != null && v !== '') out.pages[page][k] = v;
+      }
+    }
+  }
+
+  // Library: nur ersetzen, wenn WordPress tatsächlich Artikel liefert
+  if (Array.isArray(wp.library) && wp.library.length) {
+    out.library = wp.library.map(a => ({
+      slug: a.slug,
+      title: a.title,
+      date: a.date,
+      excerpt: a.excerpt,
+      cover: a.cover,
+      // WP liefert fertiges HTML (bodyHtml); Fallback: Markdown (body)
+      bodyHtml: a.bodyHtml != null ? a.bodyHtml : marked.parse(a.body || ''),
+    }));
+  }
+
+  return out;
+}
+
+async function loadContent() {
+  const local = loadLocal();
+  const url = process.env.WP_CONTENT_URL;
+  if (!url) {
+    console.log('• Inhaltsquelle: lokale Dateien (WP_CONTENT_URL nicht gesetzt)');
+    return local;
+  }
+  try {
+    const headers = { 'Accept': 'application/json' };
+    if (process.env.WP_CONTENT_TOKEN) headers['X-HQ-Token'] = process.env.WP_CONTENT_TOKEN;
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const wp = await res.json();
+    console.log('• Inhaltsquelle: WordPress (' + url + ')');
+    return mergeWp(local, wp);
+  } catch (e) {
+    console.warn('! WordPress nicht erreichbar (' + e.message + ') → nutze lokale Inhalte als Sicherheitsnetz');
+    return local;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+ * HTML-AUFBAU (unverändert — Design bleibt 1:1)
+ * ------------------------------------------------------------------------- */
+
 /* Versioniert lokale CSS/JS-Verweise, damit Browser nie alte Dateien cachen */
 function bustAssets($) {
   $('link[rel="stylesheet"]').each(function () { const h = $(this).attr('href'); if (h && /^css\//.test(h) && h.indexOf('?') === -1) $(this).attr('href', h + '?v=' + BUILDID); });
   $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
 }
-
-/* Einstellungen (Menü-Namen + Shop-URL) aus content/settings.json */
-function readSettings() {
-  try { return JSON.parse(fs.readFileSync(path.join(SRC, 'content', 'settings.json'), 'utf8')); } catch (e) { return {}; }
-}
-const SET = readSettings();
-const SHOP_URL = SET.shop_url || 'https://hiddenqueen-2.myshopify.com';
-const NAV = {
-  gal: SET.nav_galerie || 'Galerie',
-  ueber: SET.nav_ueber || 'Über',
-  kontakt: SET.nav_kontakt || 'Kontakt',
-  lib: SET.nav_library || 'Library',
-  shop: SET.nav_shop || 'Shop'
-};
 
 /* Altes Webflow-Menü entfernen und eigenes, einfaches Menü einsetzen */
 function buildNav($) {
@@ -81,34 +183,14 @@ function buildFooterLinks($) {
   }
 }
 
-fs.rmSync(DIST, { recursive: true, force: true });
-fs.mkdirSync(DIST, { recursive: true });
-
-for (const dir of ['css', 'js', 'images', 'admin']) {
-  const from = path.join(SRC, dir);
-  if (fs.existsSync(from)) fs.cpSync(from, path.join(DIST, dir), { recursive: true });
-}
-for (const f of fs.readdirSync(SRC)) {
-  if (/\.(ico|png|svg|webmanifest|xml|txt)$/i.test(f)) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
-}
-
-/* Library-Link in die Navigation einfügen (nach Contact) */
-function injectLibraryNav($) {
-  if ($('.nav-menu a.nav-link[href="library.html"]').length) return;
-  const contactLi = $('.nav-menu .nav-list').filter((i, el) => $(el).find('a.nav-link[href*="contact.html"]').length).first();
-  if (contactLi.length) {
-    contactLi.after('<li class="nav-list"><a href="library.html" class="nav-link">Library</a><div class="nav-item-line"></div></li>');
-  }
-}
-
-/* Burger-Vollbildmenü um Library + Shop ergänzen */
-function injectMobileNav($) {
-  const ul = $('.nav-menu.hamburger').first();
-  if (!ul.length || ul.find('a[href="library.html"]').length) return;
-  const kontakt = ul.find('.hamburger-list').filter((i, el) => $(el).find('a[href*="contact.html"]').length).first();
-  const lib = '<li class="hamburger-list"><a href="library.html" class="hamburger-item-wrap w-inline-block"><h2 class="hamburger-list-item">Library</h2></a></li>';
-  const shop = '<li class="hamburger-list"><a href="https://hiddenqueen-2.myshopify.com" class="hamburger-item-wrap w-inline-block"><h2 class="hamburger-list-item">Shop</h2></a></li>';
-  kontakt.length ? kontakt.after(lib + shop) : ul.append(lib + shop);
+/* Off-brand-Reste der Webflow-Vorlage (exovia/edeldark) aus dem Output entfernen */
+function stripOffBrand($) {
+  $('.section.font, .section.labeled, .section.about-slider, .color-card-wrap, .round-circle-wrap').remove();
+  const bad = /edel ?dark|evil dark|gold (dress|gown|satin|ball)|dark theme|web ?design|factor3|business card|hamburg|mood ?board|chandelier|vintage sofa/i;
+  $('img[alt]').each(function () {
+    const a = $(this).attr('alt');
+    if (a && bad.test(a)) $(this).attr('alt', 'The Hiddenqueen');
+  });
 }
 
 /* Interne Links extensionslos machen: index.html → "/", gallery.html → "/gallery" usw. */
@@ -116,9 +198,8 @@ function cleanHomeLinks($) {
   $('a[href]').each(function () {
     let h = $(this).attr('href');
     if (!h) return;
-    // nur lokale .html-Links (keine externen, keine Anker/Mailto)
     if (/^(https?:|mailto:|tel:|#|\/\/)/i.test(h)) return;
-    h = h.replace(/^\.?\//, ''); // führendes ./ oder / entfernen
+    h = h.replace(/^\.?\//, '');
     const m = h.match(/^([^?#]+)\.html(\?[^#]*)?(#.*)?$/i);
     if (!m) return;
     const name = m[1].replace(/^\/+/, '');
@@ -127,77 +208,91 @@ function cleanHomeLinks($) {
   });
 }
 
-/* Off-brand-Reste der Webflow-Vorlage (exovia/edeldark) aus dem Output entfernen */
-function stripOffBrand($) {
-  // komplette off-brand Sektionen löschen (waren bisher nur per CSS versteckt)
-  $('.section.font, .section.labeled, .section.about-slider, .color-card-wrap, .round-circle-wrap').remove();
-  // Vorlagen-Alt-Texte (Goldkleider/Edel Dark/Webdesign …) durch Marke ersetzen
-  const bad = /edel ?dark|evil dark|gold (dress|gown|satin|ball)|dark theme|web ?design|factor3|business card|hamburg|mood ?board|chandelier|vintage sofa/i;
-  $('img[alt]').each(function () {
-    const a = $(this).attr('alt');
-    if (a && bad.test(a)) $(this).attr('alt', 'The Hiddenqueen');
-  });
-}
-
 /* Robustes Nav-/Preloader-Skript einbinden */
 function injectScript($) {
   if (!$('script[src="js/hq.js"]').length) $('body').append('<script src="js/hq.js"></script>');
 }
 
-/* HTML-Seiten verarbeiten (Inhalte einspielen) */
-for (const page of fs.readdirSync(SRC)) {
-  if (!page.endsWith('.html')) continue;
-  const $ = cheerio.load(fs.readFileSync(path.join(SRC, page), 'utf8'), { decodeEntities: false });
-  const jsonPath = path.join(SRC, 'content', page.replace('.html', '.json'));
-  const fields = MAP[page];
-  if (fields && fs.existsSync(jsonPath)) {
-    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    for (const f of fields) {
-      const val = data[f.key];
-      if (val == null || val === '') continue;
-      const el = $(f.sel).eq(f.idx || 0);
-      if (!el.length) { console.warn('  ! Selektor fehlt:', page, f.key, f.sel); continue; }
-      if (f.attr) { el.attr(f.attr, val); if (f.dropSrcset) { el.removeAttr('srcset'); el.removeAttr('sizes'); } }
-      else if (f.html) el.html(val);
-      else el.text(val);
-    }
+/* ----------------------------------------------------------------------------
+ * MAIN
+ * ------------------------------------------------------------------------- */
+async function main() {
+  const CONTENT = await loadContent();
+
+  // Einstellungen / Navigation aus den geladenen Inhalten
+  SET = CONTENT.settings || {};
+  SHOP_URL = SET.shop_url || 'https://hiddenqueen-2.myshopify.com';
+  NAV = {
+    gal: SET.nav_galerie || 'Galerie',
+    ueber: SET.nav_ueber || 'Über',
+    kontakt: SET.nav_kontakt || 'Kontakt',
+    lib: SET.nav_library || 'Library',
+    shop: SET.nav_shop || 'Shop',
+  };
+
+  fs.rmSync(DIST, { recursive: true, force: true });
+  fs.mkdirSync(DIST, { recursive: true });
+
+  for (const dir of ['css', 'js', 'images', 'admin']) {
+    const from = path.join(SRC, dir);
+    if (fs.existsSync(from)) fs.cpSync(from, path.join(DIST, dir), { recursive: true });
   }
-  stripOffBrand($);
-  buildNav($);
-  buildFooterLinks($);
-  cleanHomeLinks($);
-  injectScript($);
-  bustAssets($);
-  fs.writeFileSync(path.join(DIST, page), $.html());
-  console.log('✓', page);
-}
+  for (const f of fs.readdirSync(SRC)) {
+    if (/\.(ico|png|svg|webmanifest|xml|txt)$/i.test(f)) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
+  }
 
-/* ---- The Queen's Library ---- */
-const libDir = path.join(SRC, 'content', 'library');
-if (fs.existsSync(libDir)) {
-  const fmtDate = d => { if (!d) return ''; const dt = new Date(d); return isNaN(dt) ? d : dt.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }); };
-  const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  const articles = fs.readdirSync(libDir).filter(f => f.endsWith('.md')).map(f => {
-    const g = matter(fs.readFileSync(path.join(libDir, f), 'utf8'));
-    return { slug: f.replace(/\.md$/, ''), ...g.data, bodyHtml: marked.parse(g.content || '') };
-  }).sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
-
-  function shell(title, contentHtml) {
-    const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
-    $('title').text(title);
+  /* HTML-Seiten verarbeiten (Inhalte einspielen) */
+  for (const page of fs.readdirSync(SRC)) {
+    if (!page.endsWith('.html')) continue;
+    const $ = cheerio.load(fs.readFileSync(path.join(SRC, page), 'utf8'), { decodeEntities: false });
+    const fields = MAP[page];
+    const data = CONTENT.pages[page];
+    if (fields && data) {
+      for (const f of fields) {
+        const val = data[f.key];
+        if (val == null || val === '') continue;
+        const el = $(f.sel).eq(f.idx || 0);
+        if (!el.length) { console.warn('  ! Selektor fehlt:', page, f.key, f.sel); continue; }
+        if (f.attr) { el.attr(f.attr, val); if (f.dropSrcset) { el.removeAttr('srcset'); el.removeAttr('sizes'); } }
+        else if (f.html) el.html(val);
+        else el.text(val);
+      }
+    }
     stripOffBrand($);
     buildNav($);
     buildFooterLinks($);
+    cleanHomeLinks($);
     injectScript($);
     bustAssets($);
-    $('section').not('.footer').remove();
-    $('section.footer').before(contentHtml);
-    cleanHomeLinks($); // nach dem Einfügen, damit auch Artikel-/Karten-Links sauber sind
-    return $.html();
+    fs.writeFileSync(path.join(DIST, page), $.html());
+    console.log('✓', page);
   }
 
-  const cards = articles.map(a => `
+  /* ---- The Queen's Library ---- */
+  const articles = (CONTENT.library || [])
+    .filter(a => a && a.title)
+    .map(a => ({ ...a, slug: a.slug || String(a.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') }))
+    .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+
+  if (articles.length) {
+    const fmtDate = d => { if (!d) return ''; const dt = new Date(d); return isNaN(dt) ? d : dt.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }); };
+    const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    function shell(title, contentHtml) {
+      const $ = cheerio.load(fs.readFileSync(path.join(SRC, 'contact.html'), 'utf8'), { decodeEntities: false });
+      $('title').text(title);
+      stripOffBrand($);
+      buildNav($);
+      buildFooterLinks($);
+      injectScript($);
+      bustAssets($);
+      $('section').not('.footer').remove();
+      $('section.footer').before(contentHtml);
+      cleanHomeLinks($);
+      return $.html();
+    }
+
+    const cards = articles.map(a => `
         <a class="ql-card" href="article-${a.slug}.html">
           <span class="ql-card__img" style="background-image:url('${a.cover || '/images/c-hero.jpg'}')"></span>
           <span class="ql-card__date">${fmtDate(a.date)}</span>
@@ -205,7 +300,7 @@ if (fs.existsSync(libDir)) {
           <span class="ql-card__excerpt">${esc(a.excerpt)}</span>
         </a>`).join('');
 
-  const indexContent = `
+    const indexContent = `
     <section class="section ql-page">
       <div class="big-container w-container">
         <h1 class="ql-hero">The Queen's Library</h1>
@@ -213,23 +308,26 @@ if (fs.existsSync(libDir)) {
         <div class="ql-grid">${cards}</div>
       </div>
     </section>`;
-  fs.writeFileSync(path.join(DIST, 'library.html'), shell("The Queen's Library | The Hiddenqueen", indexContent));
+    fs.writeFileSync(path.join(DIST, 'library.html'), shell("The Queen's Library | The Hiddenqueen", indexContent));
 
-  for (const a of articles) {
-    const cover = a.cover ? `<span class="ql-article__cover" style="background-image:url('${a.cover}')"></span>` : '';
-    const content = `
+    for (const a of articles) {
+      const cover = a.cover ? `<span class="ql-article__cover" style="background-image:url('${a.cover}')"></span>` : '';
+      const content = `
     <section class="section ql-page">
       <div class="ql-article-wrap">
         <a class="ql-back" href="library.html">&larr; The Queen's Library</a>
         <div class="ql-article__date">${fmtDate(a.date)}</div>
         <h1 class="ql-article__title">${esc(a.title)}</h1>
         ${cover}
-        <article class="ql-article">${a.bodyHtml}</article>
+        <article class="ql-article">${a.bodyHtml || ''}</article>
       </div>
     </section>`;
-    fs.writeFileSync(path.join(DIST, `article-${a.slug}.html`), shell(`${a.title} | The Hiddenqueen`, content));
+      fs.writeFileSync(path.join(DIST, `article-${a.slug}.html`), shell(`${a.title} | The Hiddenqueen`, content));
+    }
+    console.log('✓ The Queen\'s Library:', articles.length, 'Artikel');
   }
-  console.log('✓ The Queen\'s Library:', articles.length, 'Artikel');
+
+  console.log('Build fertig → dist/');
 }
 
-console.log('Build fertig → dist/');
+main().catch(err => { console.error('Build fehlgeschlagen:', err); process.exit(1); });
