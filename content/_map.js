@@ -65,3 +65,14 @@ module.exports = {
     { key: 'get_in_touch',   sel: '.getstart-text' },
   ],
 };
+
+/* Für jedes Bild (attr:'src') automatisch ein Alt-Text-Feld ergänzen:
+   gleicher Selektor/Index, schreibt das alt-Attribut. Wird nur angewendet,
+   wenn in WordPress wirklich ein Alt-Text gepflegt wurde (sonst bleibt der aktuelle). */
+for (const page of Object.keys(module.exports)) {
+  const altFields = [];
+  for (const f of module.exports[page]) {
+    if (f.attr === 'src') altFields.push({ key: f.key + '_alt', sel: f.sel, idx: f.idx || 0, attr: 'alt' });
+  }
+  module.exports[page].push(...altFields);
+}

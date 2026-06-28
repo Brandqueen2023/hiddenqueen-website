@@ -186,7 +186,12 @@ function buildFooterLinks($) {
 /* Off-brand-Reste der Webflow-Vorlage (exovia/edeldark) aus dem Output entfernen */
 function stripOffBrand($) {
   $('.section.font, .section.labeled, .section.about-slider, .color-card-wrap, .round-circle-wrap').remove();
-  const bad = /edel ?dark|evil dark|gold (dress|gown|satin|ball)|dark theme|web ?design|factor3|business card|hamburg|mood ?board|chandelier|vintage sofa/i;
+}
+
+/* Neutralisiert NUR übrig gebliebene Vorlagen-Alt-Texte. Läuft VOR dem Einspielen
+   der Inhalte, damit selbst gepflegte Alt-Texte anschließend gewinnen. */
+function cleanTemplateAlts($) {
+  const bad = /edel ?dark|evil dark|gold (dress|gown|ball)|dark theme|web ?design|factor3|business card|hamburg|chandelier|vintage sofa/i;
   $('img[alt]').each(function () {
     const a = $(this).attr('alt');
     if (a && bad.test(a)) $(this).attr('alt', 'The Hiddenqueen');
@@ -216,6 +221,27 @@ function injectScript($) {
 /* ----------------------------------------------------------------------------
  * MAIN
  * ------------------------------------------------------------------------- */
+/* SEO/Meta in den <head> schreiben (nur wenn ein Wert gepflegt ist; leer = bleibt). */
+function setMeta($, attr, key, val) {
+  let el = $('meta[' + attr + '="' + key + '"]').first();
+  if (!el.length) { $('head').append('<meta ' + attr + '="' + key + '" content="">'); el = $('meta[' + attr + '="' + key + '"]').first(); }
+  el.attr('content', val);
+}
+function applySeo($, data) {
+  if (!data) return;
+  if (data.seo_title) {
+    $('title').first().text(data.seo_title);
+    setMeta($, 'property', 'og:title', data.seo_title);
+    setMeta($, 'name', 'twitter:title', data.seo_title);
+  }
+  if (data.seo_description) {
+    setMeta($, 'name', 'description', data.seo_description);
+    setMeta($, 'property', 'og:description', data.seo_description);
+    setMeta($, 'name', 'twitter:description', data.seo_description);
+  }
+  if (data.seo_keywords) setMeta($, 'name', 'keywords', data.seo_keywords);
+}
+
 async function main() {
   const CONTENT = await loadContent();
 
@@ -247,6 +273,7 @@ async function main() {
     const $ = cheerio.load(fs.readFileSync(path.join(SRC, page), 'utf8'), { decodeEntities: false });
     const fields = MAP[page];
     const data = CONTENT.pages[page];
+    cleanTemplateAlts($);
     if (fields && data) {
       for (const f of fields) {
         const val = data[f.key];
@@ -258,6 +285,7 @@ async function main() {
         else el.text(val);
       }
     }
+    applySeo($, data);
     stripOffBrand($);
     buildNav($);
     buildFooterLinks($);

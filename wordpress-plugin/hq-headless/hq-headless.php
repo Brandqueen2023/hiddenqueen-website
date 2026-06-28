@@ -23,7 +23,7 @@ class HQ_Headless {
 
     /** Seiten, die das Plugin verwaltet: slug => [Titel, Felder] */
     public static function groups() {
-        return [
+        $pages = [
             'index' => [
                 'slug'  => 'hq-startseite',
                 'title' => 'Startseite',
@@ -110,6 +110,27 @@ class HQ_Headless {
                 ],
             ],
         ];
+
+        // SEO-Felder (oben) + je Bild ein Alt-Text-Feld (unten) automatisch ergänzen.
+        // Leer lassen = aktueller Stand der Website bleibt unverändert.
+        foreach ($pages as $k => &$g) {
+            if (($g['page_key'] ?? '') === '__settings__') continue;
+            $seo = [
+                ['name' => 'seo_title',       'label' => 'SEO · Seitentitel (Google & Browser-Tab)', 'type' => 'text'],
+                ['name' => 'seo_description', 'label' => 'SEO · Meta-Beschreibung (Google-Vorschau)', 'type' => 'textarea'],
+                ['name' => 'seo_keywords',    'label' => 'SEO · Keywords (Komma-getrennt)',           'type' => 'text'],
+            ];
+            $alts = [];
+            foreach ($g['fields'] as $f) {
+                if (($f['type'] ?? '') === 'image') {
+                    $alts[] = ['name' => $f['name'] . '_alt', 'label' => $f['label'] . ' · Alt-Text', 'type' => 'text'];
+                }
+            }
+            $g['fields'] = array_merge($seo, $g['fields'], $alts);
+        }
+        unset($g);
+
+        return $pages;
     }
 
     /* ------------------------------------------------------------------ */
