@@ -5,7 +5,7 @@
   "nav_kontakt": "Kontakt",
   "nav_library": "Library",
   "nav_shop": "Shop",
-  "impressum_url": "https://brandqueen.de/impressum",
-  "datenschutz_url": "https://brandqueen.de/datenschutzerklarung",
+  "impressum_url": "/impressum",
+  "datenschutz_url": "/datenschutz",
   "agb_url": "https://brandqueen.de/agb"
 }

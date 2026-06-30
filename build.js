@@ -171,10 +171,16 @@ function buildFooterLinks($) {
   const imp = SET.impressum_url || 'https://brandqueen.de/impressum';
   const dat = SET.datenschutz_url || 'https://brandqueen.de/datenschutzerklarung';
   const agb = SET.agb_url || 'https://brandqueen.de/agb';
+  // Externe Links (http…) im neuen Tab; interne Rechtsseiten (/impressum) im selben Tab.
+  const setLink = (el, url) => {
+    el.attr('href', url);
+    if (/^https?:/i.test(url)) el.attr('target', '_blank').attr('rel', 'noopener');
+    else el.removeAttr('target').removeAttr('rel');
+  };
   $('.footer-item-text').each(function () {
     const t = $(this).text().trim().toLowerCase();
-    if (t.indexOf('impressum') === 0) $(this).attr('href', imp).attr('target', '_blank').attr('rel', 'noopener');
-    if (t.indexOf('datenschutz') === 0) $(this).attr('href', dat).attr('target', '_blank').attr('rel', 'noopener');
+    if (t.indexOf('impressum') === 0) setLink($(this), imp);
+    if (t.indexOf('datenschutz') === 0) setLink($(this), dat);
   });
   const wrap = $('.footer-item-wrap').first();
   if (wrap.length && wrap.find('a').filter(function () { return $(this).text().trim().toUpperCase() === 'AGB'; }).length === 0) {
@@ -216,6 +222,15 @@ function cleanHomeLinks($) {
 /* Robustes Nav-/Preloader-Skript einbinden */
 function injectScript($) {
   if (!$('script[src="js/hq.js"]').length) $('body').append('<script src="js/hq.js"></script>');
+}
+
+/* Cookie-Consent (CookieConsent v3, Orest Bida) – Anthrazit/Rosegold, Du-Form */
+function injectCookieConsent($) {
+  if ($('link[href*="cookieconsent@3"]').length) return;
+  $('head').append('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">');
+  $('head').append("<style>#cc-main{--cc-font-family:'Inter',sans-serif;--cc-btn-primary-bg:#cf9c8c;--cc-btn-primary-color:#1a1714;--cc-btn-primary-hover-bg:#d9ac9d;--cc-btn-secondary-hover-bg:#2a2521;--cc-toggle-on-bg:#cf9c8c;--cc-link-color:#cf9c8c;--cc-btn-border-radius:2px}</style>");
+  $('body').append('<script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>');
+  $('body').append('<script src="js/cc-init.js"></script>');
 }
 
 /* ----------------------------------------------------------------------------
@@ -291,6 +306,7 @@ async function main() {
     buildFooterLinks($);
     cleanHomeLinks($);
     injectScript($);
+    injectCookieConsent($);
     bustAssets($);
     fs.writeFileSync(path.join(DIST, page), $.html());
     console.log('✓', page);
@@ -313,6 +329,7 @@ async function main() {
       buildNav($);
       buildFooterLinks($);
       injectScript($);
+      injectCookieConsent($);
       bustAssets($);
       $('section').not('.footer').remove();
       $('section.footer').before(contentHtml);
