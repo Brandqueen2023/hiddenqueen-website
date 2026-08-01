@@ -27,7 +27,7 @@ const JOBS = [
   { out: 'haltung-gestaltung', page: 12 },
   { out: 'hero-kollektionen', page: 13 },
   { out: 'hero-kontakt', page: 14 },
-  { out: 'collection-queens-ritual', page: 15 },
+  { out: 'collection-queens-ritual', page: 15, crop: { left: 0.38, top: 0.30, w: 0.55, h: 0.6875 } },
   { out: 'collection-the-collection', page: 16 },
   { out: 'hero-faq', page: 17 },
   { out: 'collection-the-surrender', page: 18 },
