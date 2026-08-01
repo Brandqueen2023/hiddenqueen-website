@@ -14,6 +14,16 @@
       }, 2200);
     }
 
+    /* 1b) Neuer, kurzer Signet-Vorlader (respektiert prefers-reduced-motion via CSS) */
+    var hqpl = document.querySelector('.hq-preloader');
+    if (hqpl) {
+      hqpl.style.pointerEvents = 'none';
+      setTimeout(function () {
+        hqpl.classList.add('is-hidden');
+        setTimeout(function () { hqpl.style.display = 'none'; }, 650);
+      }, 750);
+    }
+
     /* 2) Eigenes Menü: Burger öffnet Overlay, X/Link/Hintergrund/ESC schließt */
     var burger = document.querySelector('.hq-burger');
     var overlay = document.querySelector('.hq-overlay');

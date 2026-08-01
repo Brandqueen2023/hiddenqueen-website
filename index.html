@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
-  <script type="text/javascript">WebFont.load({ google: { families: ["Cinzel:300,400,500,600,700","Inter:300,400,500,600,700"] } });</script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["Fraunces:400,500,600,700","Shippori Mincho:400,700"] } });</script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
   <script type="application/ld+json">
@@ -32,7 +32,7 @@
   "email": "concierge@thehiddenqueen.de",
   "description": "HiddenQueen gestaltet außergewöhnliche Kollektionen für Frauen und Paare – Geschichten, ausgewählte Designobjekte und feine Impulse ohne festen Ablauf.",
   "address": { "@type": "PostalAddress", "streetAddress": "Mühle 64", "postalCode": "40724", "addressLocality": "Hilden", "addressCountry": "DE" },
-  "logo": "https://www.thehiddenqueen.de/images/HiddenQueen-Logo.svg"
+  "logo": "https://www.thehiddenqueen.de/images/hiddenqueen-emblem-light.svg"
 }
   </script>
 </head>
@@ -46,7 +46,7 @@
     </div>
     <div class="hq-hero-content">
       <span class="hq-eyebrow">HIDDENQUEEN</span>
-      <h1 class="hq-h1">Vielleicht fehlt euch nicht die Liebe.<br>Vielleicht fehlt ihr nur wieder ein Moment.</h1>
+      <h1 class="hq-h1">Vielleicht fehlt euch nicht die Liebe.<br>Vielleicht fehlt euch nur wieder ein Moment.</h1>
       <p class="hq-lead">HiddenQueen gestaltet außergewöhnliche Kollektionen für Frauen und Paare. Geschichten, ausgewählte Designobjekte und feine Impulse öffnen eine eigene Atmosphäre, ohne euch einen Ablauf vorzugeben.</p>
       <div class="hq-hero-actions">
         <a href="/private-preview" class="hq-btn hq-btn--primary" data-analytics="private_preview_start_click">Private Preview beginnen</a>
@@ -55,7 +55,7 @@
     </div>
   </section>
 
-  <section class="hq-section hq-section--ivory">
+  <section class="hq-section hq-section--ivory hq-pattern-band">
     <div class="hq-inner hq-inner--narrow hq-text-center">
       <h2 class="hq-h2">Es beginnt mit einer Einladung.</h2>
       <p class="hq-sub hq-text-center">Nicht mit einer Anleitung.</p>
@@ -128,23 +128,38 @@
     </div>
   </section>
 
-  <section class="hq-section hq-section--black" aria-labelledby="hq-preview-heading">
+  <section class="hq-section hq-section--black hq-pattern-band" aria-labelledby="hq-preview-heading">
     <div class="hq-inner hq-inner--narrow hq-text-center">
       <span class="hq-eyebrow">Private Preview</span>
       <h2 class="hq-h2" id="hq-preview-heading">Bevor wir auswählen, möchten wir zuhören.</h2>
       <p class="hq-lead hq-text-center">Wir suchen Frauen und Paare, die HiddenQueen vor dem offiziellen Verkaufsstart erleben und uns ehrlich sagen, was berührt, irritiert oder noch fehlt.</p>
       <p class="hq-lead hq-text-center">Die Bewerbung ist freiwillig. Es besteht keine Kaufverpflichtung. Fotos oder öffentliche Aussagen sind keine Voraussetzung.</p>
       <div style="margin-top:30px;">
-        <a href="/private-preview" class="hq-btn hq-btn--ghost-dark" data-analytics="private_preview_start_click">Private Preview beginnen</a>
+        <a href="/private-preview" class="hq-btn hq-btn--primary" data-analytics="private_preview_start_click">Private Preview beginnen</a>
       </div>
     </div>
   </section>
 
   <section class="hq-section hq-section--ivory">
     <div class="hq-inner hq-inner--narrow hq-text-center">
-      <h2 class="hq-h2">Vielleicht beginnt eure Einladung hier.</h2>
-      <p class="hq-sub hq-text-center">Wir lesen jede Bewerbung persönlich.</p>
-      <a href="/private-preview" class="hq-btn hq-btn--ghost-light" data-analytics="private_preview_start_click">Private Preview beginnen</a>
+      <h2 class="hq-h2">Noch nicht bereit für die Private Preview?</h2>
+      <p class="hq-sub hq-text-center">Dann melden wir uns, sobald HiddenQueen offiziell startet.</p>
+      <form id="hq-newsletter-form" novalidate class="hq-inner--narrow" style="margin-top:28px; text-align:left;">
+        <div class="hq-honeypot" aria-hidden="true">
+          <label for="hq-n-website">Website</label>
+          <input type="text" id="hq-n-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="form_started_at" id="hq-n-started">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+          <div class="hq-field" style="flex:1 1 220px; margin-bottom:0;">
+            <label for="hq-n-email" class="hq-visually-hidden">E-Mail-Adresse</label>
+            <input class="hq-input" type="email" id="hq-n-email" name="email" required autocomplete="email" placeholder="deine-email@beispiel.de">
+          </div>
+          <button type="submit" class="hq-btn hq-btn--ghost-light" id="hq-n-submit" style="flex:none;">Informiert bleiben</button>
+        </div>
+        <p class="hq-charcount" style="text-align:left; margin-top:10px;">Keine Bewerbung, keine Verpflichtung. Nur eine kurze Nachricht, wenn es so weit ist. Jederzeit abbestellbar.</p>
+        <p class="hq-form-status" id="hq-n-status" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </section>
 

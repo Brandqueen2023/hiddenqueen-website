@@ -1,35 +1,45 @@
 /* ============================================================
-   HiddenQueen – Designtokens + Komponenten fuer die ueberarbeitete
-   Informationsarchitektur (Masterauftrag 2026-08-01).
-   Baut auf den bestehenden, freigegebenen Marken-Grundwerten auf
-   (siehe rebecca-...webflow.css :root): Anthrazit #121212, Rosé
-   #cf9c8c, Cinzel/Inter. Ergaenzt warme Creme-/Beigeflaechen fuer
-   ueberwiegend helle Abschnitte (Abschnitt 13.2), Anthrazit/Schwarz
-   bleibt fuer ausgewaehlte Bereiche (Hero, Private Preview, Footer).
+   HiddenQueen – Designtokens + Komponenten.
+   Farben/Schriften 1:1 aus dem offiziellen Brand Guideline PDF
+   (hiddenqueen_branddesign.pdf, Abschnitte "Farbpalette" + "Typografie"):
+     Charcoal        #3E3C3D  (primaerer dunkler Grund + Schrift auf hell)
+     Charcoal Muster #544E50  (Ornamentmuster auf dunklen Untergruenden)
+     Charcoal mauve  #958789  (zurueckhaltende Details auf dunklem Grund)
+     Roségold        #D39B8B  (Akzent/Signet, dunklerer Verlaufston)
+     Roségold hell   #E9C2B6  (heller Verlaufston, Metallic-Verlauf)
+     Roségold Muster #F7E3DB  (dezentes Ornamentmuster auf hellem Grund)
+     Blush Ivory     #FAF0ED  (primaerer heller Grund + Schrift auf dunkel)
+   Headline-Font laut Guide "Careny" (Envato Elements, nicht frei/oeffentlich
+   verfuegbar) – bis die lizenzierte Schriftdatei vorliegt, uebergangsweise
+   "Fraunces" (Google Fonts) als naechstliegender freier Ersatz, klar
+   dokumentiert. Fliesstext exakt wie im Guide: "Shippori Mincho".
    ============================================================ */
 
 :root{
-  --hq-ivory:#F7F1EC;
-  --hq-beige:#EFE3D8;
-  --hq-anthracite:#121212;
-  --hq-anthracite-2:#171717;
-  --hq-black:#000;
+  --hq-ivory:#FAF0ED;
+  --hq-beige:#F7E3DB;
+  --hq-anthracite:#3E3C3D;
+  --hq-anthracite-2:#544E50;
+  --hq-black:#221F1E;
   --hq-white:#fff;
-  --hq-ink:#2B2624;
-  --hq-ink-soft:#5B534E;
-  --hq-rose:#cf9c8c;
-  --hq-rose-deep:#a97b6c;
-  --hq-rose-text:#835548; /* dunklere Rosé-Variante fuer Text auf hellem Grund, WCAG AA (>=4.5:1) */
-  --hq-copper:#c6926f;
-  --hq-line-light:rgba(43,38,36,.14);
-  --hq-line-dark:rgba(255,255,255,.14);
+  --hq-ink:#3E3C3D;
+  --hq-ink-soft:#655E5F;
+  --hq-ink-soft-on-dark:#c8bcbb;
+  --hq-rose:#D39B8B;
+  --hq-rose-light:#E9C2B6;
+  --hq-rose-pattern:#F7E3DB;
+  --hq-rose-deep:#D39B8B;
+  --hq-rose-text:#89655a; /* abgedunkelte Roségold-Variante fuer Text auf hellem Grund, WCAG AA (>=4.5:1) */
+  --hq-copper:#D39B8B;
+  --hq-line-light:rgba(62,60,61,.16);
+  --hq-line-dark:rgba(250,240,237,.16);
   --hq-radius:2px;
-  --hq-radius-lg:4px;
+  --hq-radius-lg:2px;
   --hq-gap:clamp(20px, 4vw, 48px);
   --hq-section-pad:clamp(64px, 10vw, 128px);
   --hq-max:1180px;
-  --hq-font-head:'Cinzel', serif;
-  --hq-font-body:'Inter', sans-serif;
+  --hq-font-head:'Fraunces', serif; /* Platzhalter fuer "Careny" (Envato) */
+  --hq-font-body:'Shippori Mincho', serif;
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -63,17 +73,47 @@ summary:focus-visible{
 
 /* ---------- Header-Kontrast auf allen Untergruenden ---------- */
 .hq-header{
-  background:linear-gradient(180deg, rgba(18,18,18,.62), rgba(18,18,18,0));
+  background:linear-gradient(180deg, rgba(62,60,61,.66), rgba(62,60,61,0));
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
 }
+.hq-logo img{ height:44px !important; width:auto; }
+
+/* ---------- Signet-Vorlader (kurz, dezent, respektiert reduzierte Bewegung) ---------- */
+.hq-preloader{
+  position:fixed; inset:0; z-index:20000; background:var(--hq-anthracite);
+  display:flex; align-items:center; justify-content:center; transition:opacity .6s ease;
+}
+.hq-preloader img{ width:56px; height:56px; opacity:0; animation:hqPreloaderFade 1.4s ease forwards; }
+.hq-preloader.is-hidden{ opacity:0; pointer-events:none; }
+@keyframes hqPreloaderFade{
+  0%{ opacity:0; transform:scale(.9); }
+  45%{ opacity:1; transform:scale(1); }
+  100%{ opacity:1; transform:scale(1); }
+}
+@media (prefers-reduced-motion: reduce){ .hq-preloader{ display:none; } }
+
+/* ---------- Ornamentmuster (offizielles Damast-Motiv aus dem Brand Guide) ---------- */
+.hq-pattern-band{
+  position:relative; overflow:hidden;
+}
+.hq-pattern-band::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--hq-pattern-img, url('/images/pattern-damask-rose.png'));
+  background-repeat:repeat; background-size:180px auto; background-position:top center;
+  opacity:.14;
+}
+.hq-section--dark .hq-pattern-band::before, .hq-section--black .hq-pattern-band::before{
+  --hq-pattern-img:url('/images/pattern-damask-charcoal.png'); opacity:.18;
+}
+.hq-pattern-band > *{ position:relative; }
 .hq-nav{ flex-wrap:wrap; row-gap:10px; }
 .hq-nav-cta{
   font-family:var(--hq-font-body) !important; font-size:.72rem !important;
-  letter-spacing:.16em !important; text-transform:uppercase; color:var(--hq-white) !important;
-  background:#7a3a26;
+  letter-spacing:.16em !important; text-transform:uppercase; color:var(--hq-anthracite) !important;
+  background:linear-gradient(90deg, var(--hq-rose-light), var(--hq-rose));
   padding:11px 22px; border-radius:1px; transition:filter .2s ease;
 }
-.hq-nav-cta:hover{ filter:brightness(1.12); color:var(--hq-white) !important; }
+.hq-nav-cta:hover{ filter:brightness(1.05); color:var(--hq-anthracite) !important; }
 
 /* ---------- Sections ---------- */
 .hq-section{ padding:var(--hq-section-pad) clamp(20px, 5vw, 60px); }
@@ -102,7 +142,7 @@ summary:focus-visible{
   font-family:var(--hq-font-body); font-size:1.02rem; color:var(--hq-ink-soft);
   margin:0 0 28px; max-width:56ch;
 }
-.hq-section--dark .hq-sub, .hq-section--black .hq-sub{ color:#D9CCC7; }
+.hq-section--dark .hq-sub, .hq-section--black .hq-sub{ color:var(--hq-ink-soft-on-dark); }
 .hq-lead{ font-family:var(--hq-font-body); font-size:1.08rem; line-height:1.8; max-width:62ch; }
 .hq-lead + .hq-lead{ margin-top:1.2em; }
 .hq-text-center{ text-align:center; margin-left:auto; margin-right:auto; }
@@ -115,9 +155,9 @@ summary:focus-visible{
   transition:filter .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
 }
 .hq-btn--primary{
-  background:#7a3a26; color:var(--hq-white);
+  background:linear-gradient(90deg, var(--hq-rose-light), var(--hq-rose)); color:var(--hq-anthracite);
 }
-.hq-btn--primary:hover{ filter:brightness(1.12); }
+.hq-btn--primary:hover{ filter:brightness(1.05); }
 .hq-btn--ghost-dark{ border-color:rgba(255,255,255,.55); color:var(--hq-white); background:transparent; }
 .hq-btn--ghost-dark:hover{ border-color:var(--hq-rose); color:var(--hq-rose); }
 .hq-btn--ghost-light{ border-color:rgba(43,38,36,.35); color:var(--hq-ink); background:transparent; }
@@ -218,7 +258,7 @@ summary:focus-visible{
 .hq-card-claim{ font-family:var(--hq-font-body); font-size:.86rem; letter-spacing:.04em; color:var(--hq-rose-text); margin:0 0 10px; }
 .hq-section--dark .hq-card-claim, .hq-section--black .hq-card-claim{ color:var(--hq-rose); }
 .hq-card-text{ font-family:var(--hq-font-body); font-size:.95rem; line-height:1.65; color:var(--hq-ink-soft); margin:0; }
-.hq-section--dark .hq-card-text, .hq-section--black .hq-card-text{ color:#D9CCC7; }
+.hq-section--dark .hq-card-text, .hq-section--black .hq-card-text{ color:var(--hq-ink-soft-on-dark); }
 .hq-card-shopcta{ margin-top:12px; }
 
 /* ---------- FAQ ---------- */
@@ -246,7 +286,7 @@ summary:focus-visible{
   display:block; font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.1em;
   text-transform:uppercase; margin-bottom:8px; color:var(--hq-ink-soft);
 }
-.hq-section--dark .hq-field label, .hq-section--black .hq-field label{ color:#D9CCC7; }
+.hq-section--dark .hq-field label, .hq-section--black .hq-field label{ color:var(--hq-ink-soft-on-dark); }
 .hq-field .hq-optional{ text-transform:none; letter-spacing:0; font-size:.72rem; opacity:.7; margin-left:6px; }
 .hq-input, .hq-textarea, .hq-select{
   width:100%; box-sizing:border-box; font-family:var(--hq-font-body); font-size:1rem;
@@ -275,7 +315,7 @@ summary:focus-visible{
   display:flex; align-items:center; gap:14px; margin-bottom:36px;
   font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.08em; color:var(--hq-ink-soft);
 }
-.hq-section--dark .hq-quiz-progress, .hq-section--black .hq-quiz-progress{ color:#D9CCC7; }
+.hq-section--dark .hq-quiz-progress, .hq-section--black .hq-quiz-progress{ color:var(--hq-ink-soft-on-dark); }
 .hq-quiz-bar{ flex:1; height:2px; background:var(--hq-line-light); position:relative; border-radius:2px; overflow:hidden; }
 .hq-section--dark .hq-quiz-bar, .hq-section--black .hq-quiz-bar{ background:var(--hq-line-dark); }
 .hq-quiz-bar-fill{ position:absolute; inset:0 auto 0 0; width:0%; background:var(--hq-rose-deep); transition:width .35s ease; }
@@ -284,7 +324,7 @@ summary:focus-visible{
 @keyframes hqFade{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
 .hq-quiz-question{ font-family:var(--hq-font-head); font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 8px; }
 .hq-quiz-hint{ font-size:.86rem; color:var(--hq-ink-soft); margin:0 0 22px; }
-.hq-section--dark .hq-quiz-hint, .hq-section--black .hq-quiz-hint{ color:#D9CCC7; }
+.hq-section--dark .hq-quiz-hint, .hq-section--black .hq-quiz-hint{ color:var(--hq-ink-soft-on-dark); }
 .hq-quiz-options{ display:flex; flex-direction:column; gap:12px; margin-bottom:30px; }
 .hq-quiz-option{
   display:block; position:relative; border:1px solid var(--hq-line-light); border-radius:var(--hq-radius);
@@ -295,7 +335,7 @@ summary:focus-visible{
 .hq-quiz-option input{ position:absolute; opacity:0; inset:0; width:100%; height:100%; margin:0; cursor:pointer; }
 .hq-quiz-option input:checked + span{ color:var(--hq-rose-text); }
 .hq-section--dark .hq-quiz-option input:checked + span, .hq-section--black .hq-quiz-option input:checked + span{ color:var(--hq-rose); }
-.hq-quiz-option:has(input:checked){ border-color:var(--hq-rose-deep); background:rgba(207,156,140,.08); }
+.hq-quiz-option:has(input:checked){ border-color:var(--hq-rose-deep); background:rgba(211,155,139,.14); }
 .hq-quiz-option:has(input:focus-visible){ outline:2px solid var(--hq-rose); outline-offset:2px; }
 .hq-quiz-option span{ font-family:var(--hq-font-body); font-size:1rem; }
 .hq-quiz-nav{ display:flex; justify-content:space-between; align-items:center; gap:16px; }
@@ -310,7 +350,7 @@ summary:focus-visible{
 .hq-two-col-list{ columns:2; gap:40px; }
 @media (max-width:640px){ .hq-two-col-list{ columns:1; } }
 .hq-boundary-note{
-  background:rgba(207,156,140,.1); border:1px solid rgba(207,156,140,.35);
+  background:rgba(211,155,139,.12); border:1px solid rgba(211,155,139,.4);
   padding:14px 18px; border-radius:var(--hq-radius); font-size:.85rem; margin-top:10px;
 }
 
@@ -319,7 +359,7 @@ summary:focus-visible{
 .hq-footer-inner{ max-width:var(--hq-max); margin:0 auto; text-align:center; }
 .hq-footer-claim{ font-family:var(--hq-font-head); font-size:1.1rem; margin:0 0 28px; }
 .hq-footer-links ul{ list-style:none; display:flex; flex-wrap:wrap; justify-content:center; gap:22px 30px; padding:0; margin:0 0 32px; }
-.hq-footer-links a{ color:#D9CCC7; text-decoration:none; font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; }
+.hq-footer-links a{ color:var(--hq-ink-soft-on-dark); text-decoration:none; font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; }
 .hq-footer-links a:hover{ color:var(--hq-rose); }
 .hq-footer-copy{ font-family:var(--hq-font-body); font-size:.78rem; color:#8f8681; margin:0; }
 

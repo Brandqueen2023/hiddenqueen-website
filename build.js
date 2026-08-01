@@ -42,8 +42,9 @@ function buildNav($) {
   const shopOverlay = SHOP_ENABLED && SHOP_URL ? `<a href="${SHOP_URL}">Shop</a>` : '';
 
   const header = `
+<div class="hq-preloader" aria-hidden="true"><img src="/images/hiddenqueen-emblem-light.svg" alt=""></div>
 <header class="hq-header">
-  <a class="hq-logo" href="/"><img src="/images/HiddenQueen-Logo.svg" alt="HiddenQueen"></a>
+  <a class="hq-logo" href="/"><img src="/images/hiddenqueen-emblem-light.svg" alt="HiddenQueen"></a>
   <nav class="hq-nav">
     <a href="/kollektionen">Kollektionen</a>
     <a href="/haltung">Unsere Haltung</a>
