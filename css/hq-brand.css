@@ -68,12 +68,12 @@ summary:focus-visible{
 }
 .hq-nav{ flex-wrap:wrap; row-gap:10px; }
 .hq-nav-cta{
-  font-family:var(--hq-font-body) !important; font-size:.74rem !important;
-  letter-spacing:.14em !important; text-transform:uppercase; color:var(--hq-white) !important;
-  background:linear-gradient(100deg,#ac6146,#8a4029);
-  padding:11px 22px; border-radius:20px; transition:filter .2s ease, transform .2s ease;
+  font-family:var(--hq-font-body) !important; font-size:.72rem !important;
+  letter-spacing:.16em !important; text-transform:uppercase; color:var(--hq-white) !important;
+  background:#7a3a26;
+  padding:11px 22px; border-radius:1px; transition:filter .2s ease;
 }
-.hq-nav-cta:hover{ filter:brightness(.94); color:var(--hq-white) !important; }
+.hq-nav-cta:hover{ filter:brightness(1.12); color:var(--hq-white) !important; }
 
 /* ---------- Sections ---------- */
 .hq-section{ padding:var(--hq-section-pad) clamp(20px, 5vw, 60px); }
@@ -110,14 +110,14 @@ summary:focus-visible{
 /* ---------- Buttons ---------- */
 .hq-btn{
   display:inline-flex; align-items:center; gap:10px; font-family:var(--hq-font-body);
-  font-size:.82rem; letter-spacing:.16em; text-transform:uppercase; text-decoration:none;
-  padding:16px 34px; border-radius:26px; border:1px solid transparent; cursor:pointer;
+  font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  padding:15px 32px; border-radius:1px; border:1px solid transparent; cursor:pointer;
   transition:filter .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
 }
 .hq-btn--primary{
-  background:linear-gradient(100deg,#ac6146,#8a4029); color:var(--hq-white);
+  background:#7a3a26; color:var(--hq-white);
 }
-.hq-btn--primary:hover{ filter:brightness(.94); }
+.hq-btn--primary:hover{ filter:brightness(1.12); }
 .hq-btn--ghost-dark{ border-color:rgba(255,255,255,.55); color:var(--hq-white); background:transparent; }
 .hq-btn--ghost-dark:hover{ border-color:var(--hq-rose); color:var(--hq-rose); }
 .hq-btn--ghost-light{ border-color:rgba(43,38,36,.35); color:var(--hq-ink); background:transparent; }
@@ -169,6 +169,41 @@ summary:focus-visible{
 @media (max-width:800px){ .hq-detail-row{ grid-template-columns:1fr 1fr; } }
 @media (max-width:520px){ .hq-detail-row{ grid-template-columns:1fr; } }
 .hq-detail-row .hq-media-45{ aspect-ratio:4/5; }
+
+/* ---------- Startseite: asymmetrisches Kollektions-Trio (Bild traegt, Name statt Text) ---------- */
+.hq-trio{ display:grid; grid-template-columns:1.3fr 1fr; gap:var(--hq-gap); align-items:stretch; }
+.hq-trio-item{ position:relative; display:block; overflow:hidden; border-radius:2px; text-decoration:none; }
+.hq-trio-item img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:var(--fp, 50% 50%); transition:transform .6s ease; }
+.hq-trio-item:hover img{ transform:scale(1.03); }
+.hq-trio-item::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(10,8,7,.72) 0%, rgba(10,8,7,0) 45%);
+  pointer-events:none;
+}
+.hq-trio-name{
+  position:absolute; left:0; right:0; bottom:0; z-index:1; margin:0;
+  padding:clamp(16px,3vw,28px); font-family:var(--hq-font-head); color:var(--hq-white);
+  font-size:clamp(1.1rem, 2vw, 1.6rem); letter-spacing:.02em;
+}
+.hq-trio-item.hq-trio-main{ aspect-ratio:4/5; }
+.hq-trio-side{ display:flex; flex-direction:column; gap:var(--hq-gap); align-self:stretch; }
+.hq-trio-side .hq-trio-item{ flex:1 1 0; min-height:0; }
+@media (max-width:760px){
+  .hq-trio{ grid-template-columns:1fr; }
+  .hq-trio-side{ flex-direction:row; }
+  .hq-trio-side .hq-trio-item{ aspect-ratio:4/5; flex:1 1 0; }
+}
+
+/* ---------- Startseite: Materialitaet als Collage (zwei versetzte Bilder statt Kachelreihe) ---------- */
+.hq-collage{ position:relative; max-width:820px; margin:0 auto; padding-bottom:12%; }
+.hq-collage-a{ display:block; position:relative; width:72%; aspect-ratio:4/5; overflow:hidden; border-radius:2px; }
+.hq-collage-b{ display:block; position:absolute; right:0; bottom:0; width:44%; aspect-ratio:4/5; overflow:hidden; border-radius:2px; box-shadow:0 18px 40px rgba(20,14,10,.22); border:6px solid var(--hq-ivory); }
+.hq-collage img{ width:100%; height:100%; object-fit:cover; object-position:var(--fp, 50% 50%); display:block; }
+@media (max-width:640px){
+  .hq-collage{ padding-bottom:22%; }
+  .hq-collage-a{ width:80%; }
+  .hq-collage-b{ width:52%; }
+}
 
 /* ---------- Kollektionskarten ---------- */
 .hq-cards{
