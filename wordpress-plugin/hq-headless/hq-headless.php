@@ -216,6 +216,22 @@ class HQ_Headless {
         return hash_equals($token, (string) $sent);
     }
 
+    /** Legt beim ersten Aufruf einen zufälligen Zugriffs-Token an, falls noch keiner existiert. */
+    public static function ensure_token() {
+        if (trim((string) get_option('hq_api_token', '')) === '') {
+            update_option('hq_api_token', wp_generate_password(32, false));
+        }
+    }
+
+    /**
+     * Entfernt den öffentlichen WordPress-Standard-Endpoint /wp/v2/users, der sonst
+     * Login-Benutzernamen preisgibt.
+     */
+    public static function disable_rest_users($endpoints) {
+        unset($endpoints['/wp/v2/users'], $endpoints['/wp/v2/users/(?P<id>[\d]+)']);
+        return $endpoints;
+    }
+
     /** Eingegebene Zeilenumbrüche in <br> umwandeln (für Überschriften/Adresse) */
     private static function nl2br_clean($v) {
         $v = str_replace(["\r\n", "\r"], "\n", (string) $v);
@@ -330,6 +346,13 @@ class HQ_Headless {
         }
         echo '<li>📝 <a href="' . esc_url(admin_url('edit.php')) . '">The Queen\'s Library (Beiträge)</a></li>';
         echo '</ul>';
+        $token = get_option('hq_api_token', '');
+        if ($token) {
+            echo '<h2>Zugriffsschutz</h2><p>Die Inhalte-Schnittstelle ist mit einem Zugriffs-Token geschützt. '
+               . 'Damit die Live-Seite die Inhalte weiter automatisch abholt, muss dieser Wert einmalig in Vercel als '
+               . 'Umgebungsvariable <code>WP_CONTENT_TOKEN</code> hinterlegt sein (Projekt hiddenqueen-website → Settings → Environment Variables):</p>'
+               . '<p><code style="font-size:14px;padding:6px 10px;background:#f0f0f1;display:inline-block;">' . esc_html($token) . '</code></p>';
+        }
         $last = get_option('hq_last_deploy', '');
         echo '<h2>Jetzt veröffentlichen</h2><p>Normalerweise nicht nötig – passiert beim Speichern automatisch. '
            . 'Falls du eine Aktualisierung manuell anstoßen willst:</p>';
@@ -342,8 +365,10 @@ class HQ_Headless {
 
     /* ------------------------------------------------------------------ */
     public static function init() {
+        add_action('admin_init', [__CLASS__, 'ensure_token']);
         add_action('acf/init', [__CLASS__, 'register_fields']);
         add_action('rest_api_init', [__CLASS__, 'register_rest']);
+        add_filter('rest_endpoints', [__CLASS__, 'disable_rest_users']);
         add_action('save_post', [__CLASS__, 'on_save'], 20, 2);
         add_action('acf/save_post', [__CLASS__, 'sync_deploy_hook'], 20);
         add_action('admin_menu', [__CLASS__, 'admin_menu']);
