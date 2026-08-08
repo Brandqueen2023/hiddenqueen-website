@@ -11,9 +11,8 @@
     { "source": "/gallery.html", "destination": "/kollektionen", "permanent": true },
     { "source": "/contact", "destination": "/kontakt", "permanent": true },
     { "source": "/contact.html", "destination": "/kontakt", "permanent": true },
-    { "source": "/library", "destination": "/", "permanent": true },
-    { "source": "/library.html", "destination": "/", "permanent": true },
-    { "source": "/article-:slug", "destination": "/", "permanent": true }
+    { "source": "/library.html", "destination": "/library", "permanent": true },
+    { "source": "/article-:slug", "destination": "/library", "permanent": true }
   ],
   "headers": [
     {

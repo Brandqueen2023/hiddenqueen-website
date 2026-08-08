@@ -149,9 +149,8 @@ async function main() {
     if (/\.(ico|png|svg|webmanifest|xml|txt)$/i.test(f)) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
   }
 
-  for (const page of fs.readdirSync(SRC)) {
-    if (!page.endsWith('.html')) continue;
-    const $ = cheerio.load(fs.readFileSync(path.join(SRC, page), 'utf8'), { decodeEntities: false });
+  function buildPage(srcFile, distFile) {
+    const $ = cheerio.load(fs.readFileSync(srcFile, 'utf8'), { decodeEntities: false });
     buildNav($);
     buildFooter($);
     injectShopFlag($);
@@ -159,8 +158,23 @@ async function main() {
     injectScript($);
     injectCookieConsent($);
     bustAssets($);
-    fs.writeFileSync(path.join(DIST, page), $.html());
+    fs.mkdirSync(path.dirname(distFile), { recursive: true });
+    fs.writeFileSync(distFile, $.html());
+  }
+
+  for (const page of fs.readdirSync(SRC)) {
+    if (!page.endsWith('.html')) continue;
+    buildPage(path.join(SRC, page), path.join(DIST, page));
     console.log('✓', page);
+  }
+
+  const libraryDir = path.join(SRC, 'library');
+  if (fs.existsSync(libraryDir)) {
+    for (const page of fs.readdirSync(libraryDir)) {
+      if (!page.endsWith('.html')) continue;
+      buildPage(path.join(libraryDir, page), path.join(DIST, 'library', page));
+      console.log('✓', 'library/' + page);
+    }
   }
 
   console.log('Build fertig → dist/ (SHOP_ENABLED=' + SHOP_ENABLED + ')');
