@@ -245,6 +245,36 @@ summary:focus-visible{
   .hq-collage-b{ width:52%; }
 }
 
+/* ---------- The Queen's Library: Artikel-Typografie + Uebersichtsliste ---------- */
+.hq-article{ max-width:700px; margin:0 auto; }
+.hq-article-eyebrow{ display:block; margin-bottom:16px; }
+.hq-article h1{ font-family:var(--hq-font-head); font-weight:500; font-size:clamp(2rem,4.4vw,3.1rem); line-height:1.15; margin:0 0 22px; color:var(--hq-ink); }
+.hq-article-dek{ font-family:var(--hq-font-head); font-size:1.2rem; line-height:1.5; color:var(--hq-ink-soft); margin:0 0 40px; }
+.hq-article-body{ font-family:var(--hq-font-body); line-height:1.85; font-size:1.05rem; color:var(--hq-ink); }
+.hq-article-body p{ margin:0 0 24px; }
+.hq-article-meta{ font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; color:var(--hq-rose-text); margin:0 0 18px; }
+.hq-article-back{ margin-top:56px; padding-top:28px; border-top:1px solid var(--hq-line-light); }
+
+.hq-library-list{ display:flex; flex-direction:column; gap:0; max-width:820px; margin:0 auto; }
+.hq-library-item{ display:grid; grid-template-columns:200px 1fr; gap:28px; align-items:center; padding:28px 0; border-bottom:1px solid var(--hq-line-light); text-decoration:none; color:inherit; }
+.hq-library-item:first-child{ padding-top:0; }
+.hq-library-item .hq-media-45{ aspect-ratio:1/1; }
+.hq-library-item-meta{ font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--hq-rose-text); margin:0 0 6px; }
+.hq-library-item-title{ font-family:var(--hq-font-head); font-size:1.3rem; margin:0 0 8px; color:var(--hq-ink); }
+.hq-library-item-dek{ font-family:var(--hq-font-body); font-size:.94rem; line-height:1.6; color:var(--hq-ink-soft); margin:0; }
+@media (max-width:600px){
+  .hq-library-item{ grid-template-columns:1fr; }
+  .hq-library-item .hq-media-45{ aspect-ratio:16/9; }
+}
+
+/* ---------- Queen's Library: "Fuer heute Abend"-Impulse am Artikelende ---------- */
+.hq-impulses{ margin:48px 0 0; padding:32px clamp(20px,4vw,36px); background:var(--hq-beige); border:1px solid var(--hq-line-light); border-radius:2px; }
+.hq-impulses-label{ font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--hq-rose-text); margin:0 0 16px; }
+.hq-impulses-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+.hq-impulses-list li{ font-family:var(--hq-font-head); font-size:1.05rem; line-height:1.5; color:var(--hq-ink); padding-left:24px; position:relative; }
+.hq-impulses-list li::before{ content:'—'; position:absolute; left:0; color:var(--hq-rose-text); }
+@media (max-width:480px){ .hq-impulses{ padding:24px 20px; } .hq-impulses-list li{ font-size:.98rem; } }
+
 /* ---------- Kollektionskarten ---------- */
 .hq-cards{
   display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(24px,3vw,40px); margin-top:12px;
