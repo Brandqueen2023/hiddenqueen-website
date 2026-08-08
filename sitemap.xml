@@ -6,4 +6,12 @@
   <url><loc>https://www.thehiddenqueen.de/haltung</loc><priority>0.7</priority></url>
   <url><loc>https://www.thehiddenqueen.de/faq</loc><priority>0.6</priority></url>
   <url><loc>https://www.thehiddenqueen.de/kontakt</loc><priority>0.5</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library</loc><priority>0.7</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library/der-erste-schritt</loc><priority>0.6</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library/diskretion-ist-keine-verpackung</loc><priority>0.6</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library/vertrauen-als-geschenk</loc><priority>0.6</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library/wenn-der-alltag-lauter-wird</loc><priority>0.6</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/library/warum-fantasie-uebung-braucht</loc><priority>0.6</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/impressum</loc><priority>0.2</priority></url>
+  <url><loc>https://www.thehiddenqueen.de/datenschutz</loc><priority>0.2</priority></url>
 </urlset>

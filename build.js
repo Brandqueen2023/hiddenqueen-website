@@ -48,6 +48,7 @@ function buildNav($) {
   <nav class="hq-nav">
     <a href="/kollektionen">Kollektionen</a>
     <a href="/haltung">Unsere Haltung</a>
+    <a href="/library">The Queen's Library</a>
     <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopNav}
@@ -61,6 +62,7 @@ function buildNav($) {
     <a href="/">Start</a>
     <a href="/kollektionen">Kollektionen</a>
     <a href="/haltung">Unsere Haltung</a>
+    <a href="/library">The Queen's Library</a>
     <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopOverlay}
@@ -82,6 +84,7 @@ function buildFooter($) {
       <ul>
         <li><a href="/kollektionen">Kollektionen</a></li>
         <li><a href="/haltung">Unsere Haltung</a></li>
+        <li><a href="/library">The Queen's Library</a></li>
         <li><a href="/private-preview">Private Preview</a></li>
         <li><a href="/faq">Häufige Fragen</a></li>
         <li><a href="/kontakt">Kontakt</a></li>
