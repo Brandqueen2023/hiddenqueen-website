@@ -71,6 +71,9 @@
           <label for="hq-c-consent">Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.</label>
         </div>
 
+        <div class="g-recaptcha" data-sitekey="" id="hq-c-recaptcha" style="margin-bottom:8px;"></div>
+        <p class="hq-charcount" style="margin-bottom:20px;">Zum Absenden ist die Einwilligung in den Formularschutz (Cookie-Einstellungen) nötig.</p>
+
         <button type="submit" class="hq-btn hq-btn--primary" id="hq-c-submit">Nachricht senden</button>
         <p class="hq-form-status" id="hq-c-status" role="status" aria-live="polite"></p>
       </form>
@@ -95,10 +98,16 @@
       message: form.message.value.trim(),
       consent: form.consent.checked,
       website: form.website.value,
-      form_started_at: form.form_started_at.value
+      form_started_at: form.form_started_at.value,
+      recaptcha_token: window.grecaptcha ? grecaptcha.getResponse() : ''
     };
     if (!data.firstname || !data.email || !data.message || !data.consent) {
       status.textContent = 'Bitte fülle alle Pflichtfelder aus und bestätige die Einwilligung.';
+      status.dataset.state = 'error';
+      return;
+    }
+    if (!data.recaptcha_token) {
+      status.textContent = 'Bitte bestätige das Sicherheits-Häkchen.';
       status.dataset.state = 'error';
       return;
     }
@@ -120,12 +129,14 @@
           status.dataset.state = 'success';
           if (window.hqTrack) window.hqTrack('contact_submit', {});
         } else {
+          if (window.grecaptcha) grecaptcha.reset();
           status.textContent = 'Das hat gerade nicht funktioniert. Deine Nachricht ist noch da. Bitte versuche es erneut.';
           status.dataset.state = 'error';
         }
       })
       .catch(function () {
         btn.disabled = false;
+        if (window.grecaptcha) grecaptcha.reset();
         status.textContent = 'Das hat gerade nicht funktioniert. Deine Nachricht ist noch da. Bitte versuche es erneut.';
         status.dataset.state = 'error';
       });
