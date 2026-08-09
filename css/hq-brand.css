@@ -38,7 +38,7 @@
   --hq-gap:clamp(20px, 4vw, 48px);
   --hq-section-pad:clamp(64px, 10vw, 128px);
   --hq-max:1180px;
-  --hq-font-head:'Fraunces', serif; /* Platzhalter fuer "Careny" (Envato) */
+  --hq-font-head:'Careny', serif;
   --hq-font-body:'Shippori Mincho', serif;
 }
 
