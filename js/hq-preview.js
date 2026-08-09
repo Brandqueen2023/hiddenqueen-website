@@ -110,6 +110,10 @@
       if (invalid) { showError(step, 'Bitte fülle die Pflichtfelder aus.'); return false; }
       var age = step.querySelector('[name="consent_age"]');
       if (age && !age.checked) { showError(step, 'Bitte bestätige, dass du volljährig bist.'); return false; }
+      if (step.querySelector('#hq-p-recaptcha') && window.grecaptcha && !grecaptcha.getResponse()) {
+        showError(step, 'Bitte bestätige das Sicherheits-Häkchen.');
+        return false;
+      }
     }
     var maxCheck = step.dataset.maxChecked;
     if (maxCheck) {
@@ -158,6 +162,7 @@
     payload.form_started_at = startedAt;
     payload.utm_source = new URLSearchParams(location.search).get('utm_source') || '';
     payload.referrer = document.referrer || '';
+    payload.recaptcha_token = window.grecaptcha ? grecaptcha.getResponse() : '';
 
     fetch('/api/private-preview', {
       method: 'POST',
@@ -173,12 +178,14 @@
           success.scrollIntoView({ behavior: 'smooth', block: 'start' });
           track('private_preview_submit', {});
         } else {
+          if (window.grecaptcha) grecaptcha.reset();
           showError(steps[current], 'Deine Antworten sind noch da. Die Übertragung hat gerade nicht funktioniert. Bitte versuche es erneut.');
           track('private_preview_error', {});
         }
       })
       .catch(function () {
         nextBtn.disabled = false;
+        if (window.grecaptcha) grecaptcha.reset();
         showError(steps[current], 'Deine Antworten sind noch da. Die Übertragung hat gerade nicht funktioniert. Bitte versuche es erneut.');
         track('private_preview_error', {});
       });

@@ -1,12 +1,18 @@
 const { query } = require('../lib/db');
 const { scoreAnswers } = require('../lib/scoring');
-const { sendMail, esc } = require('../lib/mail');
+const { sendMail, sendTemplateMail, esc } = require('../lib/mail');
+const { upsertContact } = require('../lib/brevo');
+const { verifyRecaptcha } = require('../lib/recaptcha');
 const { getClientIp, hashIp, honeypotTriggered, submittedTooFast, checkAndRecordRateLimit } = require('../lib/spam');
 
 const REQUIRED_SINGLE = [
   'q1_fuer_wen', 'q2_fehlt', 'q3_erster_schritt', 'q4_erreicht', 'q5_orientierung',
   'q6_aussage', 'q7_vertraut', 'q11_feedback', 'q12_zeit',
 ];
+
+const LIST_PP_APPLICANTS = 6;
+const TEMPLATE_PP_RECEIVED = 3; // "HQ PP 01 | Bewerbung eingegangen"
+const HQ_CONSENT_VERSION = '2026-08-01';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -21,10 +27,16 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true });
     }
 
-    const ipHash = hashIp(getClientIp(req));
+    const clientIp = getClientIp(req);
+    const ipHash = hashIp(clientIp);
     const withinLimit = await checkAndRecordRateLimit('private_preview', ipHash, { windowMinutes: 30, maxCount: 3 });
     if (!withinLimit) {
       return res.status(200).json({ ok: true });
+    }
+
+    const recaptchaOk = await verifyRecaptcha(b.recaptcha_token, clientIp);
+    if (!recaptchaOk) {
+      return res.status(400).json({ ok: false, error: 'Bitte bestätige das Sicherheits-Häkchen.' });
     }
 
     for (const key of REQUIRED_SINGLE) {
@@ -75,23 +87,40 @@ module.exports = async (req, res) => {
     );
     const id = insertRes.rows[0].id;
 
-    const confirmationHtml = `<div style="font-family:Georgia,serif;font-size:16px;color:#2B2624;line-height:1.7">
-<p>Hallo ${esc(vorname)},</p>
-<p>danke, dass du dir Zeit für unsere Fragen genommen hast.</p>
-<p>Wir sehen uns jede Bewerbung persönlich an. Wenn wir den Eindruck haben, dass eine der aktuellen Kollektionen und die jeweilige Testphase zu dir oder euch passen, melden wir uns vertraulich bei dir.</p>
-<p>Bis dahin musst du nichts weiter tun.</p>
-<p>Deine Bewerbung ist keine Bestellung und erzeugt keine Kaufverpflichtung.</p>
-<p>HiddenQueen</p>
-<p style="font-size:13px;color:#8A7C78;margin-top:24px;">Du möchtest deine Angaben berichtigen oder löschen lassen? Antworte einfach auf diese E-Mail oder nutze unsere Kontaktseite.</p>
-</div>`;
+    const baseUrl = process.env.HQ_SITE_BASE_URL || 'https://www.thehiddenqueen.de';
     try {
-      await sendMail({
+      await sendTemplateMail({
         to: email,
-        subject: 'Deine Private Preview bei HiddenQueen',
-        html: confirmationHtml,
+        templateId: TEMPLATE_PP_RECEIVED,
+        params: {
+          FIRSTNAME: vorname,
+          IMPRESSUM_URL: baseUrl + '/impressum',
+          DATENSCHUTZ_URL: baseUrl + '/datenschutz',
+        },
       });
     } catch (e) {
       console.error('Bestaetigungsmail fehlgeschlagen:', e.message);
+    }
+
+    try {
+      await upsertContact({
+        email,
+        listIds: [LIST_PP_APPLICANTS],
+        attributes: {
+          VORNAME: vorname,
+          NACHNAME: String(b.c_nachname || '').trim() || undefined,
+          HQ_PP_APPLIED_AT: new Date().toISOString().slice(0, 10),
+          HQ_PP_COLLECTION: result.top_collection || undefined,
+          HQ_PP_STATUS: status,
+          HQ_CONSENT_DATE: new Date().toISOString().slice(0, 10),
+          HQ_CONSENT_VERSION,
+          HQ_NEWSLETTER_CONSENT: !!b.consent_marketing,
+          HQ_UTM_SOURCE: String(b.utm_source || '').slice(0, 100) || undefined,
+          HQ_SOURCE: 'private_preview_form',
+        },
+      });
+    } catch (e) {
+      console.error('Brevo-Kontaktsync fehlgeschlagen:', e.message);
     }
 
     try {
