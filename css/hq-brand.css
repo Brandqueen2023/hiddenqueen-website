@@ -395,3 +395,31 @@ summary:focus-visible{
 
 /* ---------- 404 ---------- */
 .hq-404{ min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:160px 24px 100px; }
+
+/* ---------- Manufaktur / Raumkonzepte: dezente "nur auf Anfrage"-Kennzeichnung ---------- */
+.hq-tag-subtle{
+  display:inline-block; font-family:var(--hq-font-body); font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--hq-ink-soft); border:1px solid var(--hq-line-light);
+  border-radius:2px; padding:6px 14px; margin-top:18px;
+}
+.hq-section--dark .hq-tag-subtle, .hq-section--black .hq-tag-subtle{ color:var(--hq-ink-soft-on-dark); border-color:var(--hq-line-dark); }
+.hq-hero .hq-tag-subtle{ color:var(--hq-ink-soft-on-dark); border-color:rgba(255,255,255,.28); }
+
+/* Redaktionelle Liste statt Leistungskarten (Manufaktur/Raumkonzepte Abschnitt 1) */
+.hq-editorial-list{ max-width:760px; margin:48px auto 0; }
+.hq-editorial-item{ padding:28px 0; border-top:1px solid var(--hq-line-light); }
+.hq-editorial-item:last-child{ border-bottom:1px solid var(--hq-line-light); }
+.hq-section--dark .hq-editorial-item, .hq-section--black .hq-editorial-item{ border-color:var(--hq-line-dark); }
+.hq-editorial-item h3{ font-family:var(--hq-font-head); font-weight:500; font-size:1.25rem; margin:0 0 8px; }
+.hq-editorial-item p{ font-family:var(--hq-font-body); font-size:.98rem; line-height:1.7; color:var(--hq-ink-soft); margin:0; }
+.hq-section--dark .hq-editorial-item p, .hq-section--black .hq-editorial-item p{ color:var(--hq-ink-soft-on-dark); }
+
+/* Nummerierte Schritte, ruhig statt Verkaufstrichter (Prozess-Abschnitte) */
+.hq-steps{ max-width:760px; margin:48px auto 0; display:flex; flex-direction:column; gap:36px; }
+.hq-step{ display:grid; grid-template-columns:56px 1fr; gap:20px; align-items:start; }
+.hq-step-num{ font-family:var(--hq-font-head); font-size:1.6rem; color:var(--hq-rose-text); line-height:1; }
+.hq-section--dark .hq-step-num, .hq-section--black .hq-step-num{ color:var(--hq-rose); }
+.hq-step h3{ font-family:var(--hq-font-head); font-weight:500; font-size:1.15rem; margin:0 0 6px; }
+.hq-step p{ font-family:var(--hq-font-body); font-size:.96rem; line-height:1.7; color:var(--hq-ink-soft); margin:0; }
+.hq-section--dark .hq-step p, .hq-section--black .hq-step p{ color:var(--hq-ink-soft-on-dark); }
+@media (max-width:520px){ .hq-step{ grid-template-columns:40px 1fr; } .hq-step-num{ font-size:1.3rem; } }
