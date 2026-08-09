@@ -44,6 +44,10 @@
     }
   ],
   "rewrites": [
-    { "source": "/admin", "destination": "/admin/index.html" }
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/pssst", "destination": "/api/pssst" },
+    { "source": "/pssst/fuer-dich", "destination": "/pssst-fuer-dich" },
+    { "source": "/pssst/fuer-uns", "destination": "/pssst-fuer-uns" },
+    { "source": "/pssst/heute-abend", "destination": "/pssst-heute-abend" }
   ]
 }
