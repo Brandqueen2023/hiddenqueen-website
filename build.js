@@ -7,6 +7,7 @@
  * Was build.js pro Seite erledigt:
  *  - Kopf-/Fussbereich (Header/Nav/Overlay, Footer) einheitlich einsetzen
  *  - Shop-Feature-Flag anwenden (SHOP_ENABLED / SHOP_URL)
+ *  - reCAPTCHA-Site-Key aus der Umgebungsvariable einsetzen
  *  - interne Links extensionslos machen, Assets cache-bustet einbinden
  *  - Cookie-Consent + eigenes Nav-/Preloader-Skript einbinden
  */
@@ -20,6 +21,7 @@ const BUILDID = Date.now(); // Cache-Buster: bei jedem Build neu
 
 const SHOP_ENABLED = String(process.env.SHOP_ENABLED || 'false').toLowerCase() === 'true';
 const SHOP_URL = process.env.SHOP_URL || '';
+const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY || '';
 
 /* ----------------------------------------------------------------------------
  * HTML-AUFBAU
@@ -47,6 +49,9 @@ function buildNav($) {
   <a class="hq-logo" href="/"><img src="/images/hiddenqueen-emblem-light.svg" alt="HiddenQueen"></a>
   <nav class="hq-nav">
     <a href="/kollektionen">Kollektionen</a>
+    <a href="/shop">Shop</a>
+    <a href="/manufaktur">Manufaktur</a>
+    <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
     <a href="/library">The Queen's Library</a>
     <a href="/private-preview">Private Preview</a>
@@ -61,6 +66,9 @@ function buildNav($) {
   <nav class="hq-overlay-nav">
     <a href="/">Start</a>
     <a href="/kollektionen">Kollektionen</a>
+    <a href="/shop">Shop</a>
+    <a href="/manufaktur">Manufaktur</a>
+    <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
     <a href="/library">The Queen's Library</a>
     <a href="/private-preview">Private Preview</a>
@@ -83,6 +91,9 @@ function buildFooter($) {
     <nav class="hq-footer-links" aria-label="Fußzeile">
       <ul>
         <li><a href="/kollektionen">Kollektionen</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/manufaktur">Manufaktur</a></li>
+        <li><a href="/raumkonzepte">Raumkonzepte</a></li>
         <li><a href="/haltung">Unsere Haltung</a></li>
         <li><a href="/library">The Queen's Library</a></li>
         <li><a href="/private-preview">Private Preview</a></li>
@@ -122,6 +133,11 @@ function injectShopFlag($) {
   $('head').append(`<script>window.HQ_SHOP_ENABLED=${SHOP_ENABLED};window.HQ_SHOP_URL=${JSON.stringify(SHOP_URL)};</script>`);
 }
 
+/* Site-Key aus der Umgebungsvariable in vorbereitete reCAPTCHA-Widgets einsetzen. */
+function injectRecaptchaKey($) {
+  $('.g-recaptcha').attr('data-sitekey', RECAPTCHA_SITE_KEY);
+}
+
 /* Robustes Nav-/Preloader-Skript + datensparsame Analytics einbinden */
 function injectScript($) {
   if (!$('script[src^="/js/hq-analytics.js"]').length) $('body').append('<script src="/js/hq-analytics.js"></script>');
@@ -157,6 +173,7 @@ async function main() {
     buildNav($);
     buildFooter($);
     injectShopFlag($);
+    injectRecaptchaKey($);
     cleanHomeLinks($);
     injectScript($);
     injectCookieConsent($);

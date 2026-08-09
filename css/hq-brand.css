@@ -423,3 +423,8 @@ summary:focus-visible{
 .hq-step p{ font-family:var(--hq-font-body); font-size:.96rem; line-height:1.7; color:var(--hq-ink-soft); margin:0; }
 .hq-section--dark .hq-step p, .hq-section--black .hq-step p{ color:var(--hq-ink-soft-on-dark); }
 @media (max-width:520px){ .hq-step{ grid-template-columns:40px 1fr; } .hq-step-num{ font-size:1.3rem; } }
+
+/* Begriffe als flieszender Satz statt Icon-Liste (Manufaktur Abschnitt 2) */
+.hq-term-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:0; margin:40px auto 0; max-width:640px; font-family:var(--hq-font-head); font-style:italic; font-size:1.15rem; color:var(--hq-rose-text); }
+.hq-section--dark .hq-term-row, .hq-section--black .hq-term-row{ color:var(--hq-rose); }
+.hq-term-row span:not(:last-child)::after{ content:'·'; margin:0 14px; opacity:.5; font-style:normal; }
