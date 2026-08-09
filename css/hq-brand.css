@@ -428,3 +428,14 @@ summary:focus-visible{
 .hq-term-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:0; margin:40px auto 0; max-width:640px; font-family:var(--hq-font-head); font-style:italic; font-size:1.15rem; color:var(--hq-rose-text); }
 .hq-section--dark .hq-term-row, .hq-section--black .hq-term-row{ color:var(--hq-rose); }
 .hq-term-row span:not(:last-child)::after{ content:'·'; margin:0 14px; opacity:.5; font-style:normal; }
+
+/* Zwei ruhige Zugaenge (Startseite "Ueber die Kollektionen hinaus") */
+.hq-gateways{ display:grid; grid-template-columns:1fr 1fr; gap:var(--hq-gap); margin-top:48px; }
+.hq-gateway{ position:relative; display:block; overflow:hidden; border-radius:2px; aspect-ratio:4/5; text-decoration:none; }
+.hq-gateway img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:var(--fp, 50% 50%); transition:transform .6s ease; }
+.hq-gateway:hover img{ transform:scale(1.03); }
+.hq-gateway::after{ content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(10,8,7,.72) 0%, rgba(10,8,7,0) 50%); pointer-events:none; }
+.hq-gateway-content{ position:absolute; left:0; right:0; bottom:0; z-index:1; padding:clamp(18px,3vw,30px); }
+.hq-gateway-name{ font-family:var(--hq-font-head); color:var(--hq-white); font-size:clamp(1.2rem,2.2vw,1.6rem); margin:0 0 8px; }
+.hq-gateway-text{ font-family:var(--hq-font-body); color:var(--hq-ink-soft-on-dark); font-size:.9rem; line-height:1.6; margin:0 0 14px; max-width:32ch; }
+@media (max-width:700px){ .hq-gateways{ grid-template-columns:1fr; } }
