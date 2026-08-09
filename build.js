@@ -136,6 +136,9 @@ function injectShopFlag($) {
 /* Site-Key aus der Umgebungsvariable in vorbereitete reCAPTCHA-Widgets einsetzen. */
 function injectRecaptchaKey($) {
   $('.g-recaptcha').attr('data-sitekey', RECAPTCHA_SITE_KEY);
+  if ($('.g-recaptcha').length && !$('script[src^="https://www.google.com/recaptcha/api.js"]').length) {
+    $('head').append('<script src="https://www.google.com/recaptcha/api.js" type="text/javascript"></script>');
+  }
 }
 
 /* Robustes Nav-/Preloader-Skript + datensparsame Analytics einbinden */
