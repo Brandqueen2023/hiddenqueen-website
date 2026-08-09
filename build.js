@@ -7,7 +7,6 @@
  * Was build.js pro Seite erledigt:
  *  - Kopf-/Fussbereich (Header/Nav/Overlay, Footer) einheitlich einsetzen
  *  - Shop-Feature-Flag anwenden (SHOP_ENABLED / SHOP_URL)
- *  - reCAPTCHA-Site-Key aus der Umgebungsvariable einsetzen
  *  - interne Links extensionslos machen, Assets cache-bustet einbinden
  *  - Cookie-Consent + eigenes Nav-/Preloader-Skript einbinden
  */
@@ -29,8 +28,8 @@ const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY || '';
 
 /* Versioniert lokale CSS/JS-Verweise, damit Browser nie alte Dateien cachen */
 function bustAssets($) {
-  $('link[rel="stylesheet"]').each(function () { const h = $(this).attr('href'); if (h && /^css\//.test(h) && h.indexOf('?') === -1) $(this).attr('href', h + '?v=' + BUILDID); });
-  $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
+  $('link[rel="stylesheet"]').each(function () { const h = $(this).attr('href'); if (h && /^\/?css\//.test(h) && h.indexOf('?') === -1) $(this).attr('href', h + '?v=' + BUILDID); });
+  $('script[src]').each(function () { const s = $(this).attr('src'); if (s && /^\/?js\//.test(s) && s.indexOf('?') === -1) $(this).attr('src', s + '?v=' + BUILDID); });
 }
 
 /* Header/Nav/Menü-Overlay einheitlich auf jeder Seite einsetzen (Abschnitt 15) */
@@ -44,17 +43,15 @@ function buildNav($) {
   const shopOverlay = SHOP_ENABLED && SHOP_URL ? `<a href="${SHOP_URL}">Shop</a>` : '';
 
   const header = `
-<div class="hq-preloader" aria-hidden="true"><img src="/images/hiddenqueen-emblem-light.svg" alt=""></div>
+<div class="hq-preloader" aria-hidden="true"><img src="/images/hiddenqueen-logo-light.svg" alt=""></div>
 <header class="hq-header">
-  <a class="hq-logo" href="/"><img src="/images/hiddenqueen-emblem-light.svg" alt="HiddenQueen"></a>
+  <a class="hq-logo" href="/"><img src="/images/hiddenqueen-logo-light.svg" alt="HiddenQueen"></a>
   <nav class="hq-nav">
     <a href="/kollektionen">Kollektionen</a>
     <a href="/shop">Shop</a>
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
-    <a href="/library">The Queen's Library</a>
-    <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopNav}
     <a class="hq-nav-cta" href="/private-preview">Private Preview beginnen</a>
@@ -70,10 +67,9 @@ function buildNav($) {
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
-    <a href="/library">The Queen's Library</a>
-    <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopOverlay}
+    <a href="/private-preview" class="hq-nav-cta">Private Preview beginnen</a>
     <a href="/kontakt">Kontakt</a>
   </nav>
 </div>`;
@@ -95,7 +91,6 @@ function buildFooter($) {
         <li><a href="/manufaktur">Manufaktur</a></li>
         <li><a href="/raumkonzepte">Raumkonzepte</a></li>
         <li><a href="/haltung">Unsere Haltung</a></li>
-        <li><a href="/library">The Queen's Library</a></li>
         <li><a href="/private-preview">Private Preview</a></li>
         <li><a href="/faq">Häufige Fragen</a></li>
         <li><a href="/kontakt">Kontakt</a></li>
@@ -104,6 +99,11 @@ function buildFooter($) {
         <li><a href="/datenschutz">Datenschutz</a></li>
       </ul>
     </nav>
+    <p class="hq-footer-social">
+      <a href="https://www.instagram.com/hiddenqueen.official" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61593099650410" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://de.pinterest.com/thehiddenqueen/" target="_blank" rel="noopener">Pinterest</a>
+    </p>
     <p class="hq-footer-copy">© <span id="hq-year">2026</span> HiddenQueen</p>
   </div>
 </footer>
@@ -136,9 +136,6 @@ function injectShopFlag($) {
 /* Site-Key aus der Umgebungsvariable in vorbereitete reCAPTCHA-Widgets einsetzen. */
 function injectRecaptchaKey($) {
   $('.g-recaptcha').attr('data-sitekey', RECAPTCHA_SITE_KEY);
-  if ($('.g-recaptcha').length && !$('script[src^="https://www.google.com/recaptcha/api.js"]').length) {
-    $('head').append('<script src="https://www.google.com/recaptcha/api.js" type="text/javascript"></script>');
-  }
 }
 
 /* Robustes Nav-/Preloader-Skript + datensparsame Analytics einbinden */
@@ -171,8 +168,14 @@ async function main() {
     if (/\.(ico|png|svg|webmanifest|xml|txt)$/i.test(f)) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
   }
 
-  function buildPage(srcFile, distFile) {
-    const $ = cheerio.load(fs.readFileSync(srcFile, 'utf8'), { decodeEntities: false });
+  const pageFiles = fs.readdirSync(SRC).filter((f) => f.endsWith('.html'));
+  /* Library ist aus der aktuellen Website entfernt (Änderungsauftrag Abschnitt 1):
+     die Quelldateien unter library/ bleiben für einen späteren Neuaufbau erhalten,
+     werden aber bewusst nicht mehr gebaut/veröffentlicht. Alte URLs siehe
+     vercel.json (redirects -> /haltung). */
+
+  for (const page of pageFiles) {
+    const $ = cheerio.load(fs.readFileSync(path.join(SRC, page), 'utf8'), { decodeEntities: false });
     buildNav($);
     buildFooter($);
     injectShopFlag($);
@@ -181,23 +184,8 @@ async function main() {
     injectScript($);
     injectCookieConsent($);
     bustAssets($);
-    fs.mkdirSync(path.dirname(distFile), { recursive: true });
-    fs.writeFileSync(distFile, $.html());
-  }
-
-  for (const page of fs.readdirSync(SRC)) {
-    if (!page.endsWith('.html')) continue;
-    buildPage(path.join(SRC, page), path.join(DIST, page));
+    fs.writeFileSync(path.join(DIST, page), $.html());
     console.log('✓', page);
-  }
-
-  const libraryDir = path.join(SRC, 'library');
-  if (fs.existsSync(libraryDir)) {
-    for (const page of fs.readdirSync(libraryDir)) {
-      if (!page.endsWith('.html')) continue;
-      buildPage(path.join(libraryDir, page), path.join(DIST, 'library', page));
-      console.log('✓', 'library/' + page);
-    }
   }
 
   console.log('Build fertig → dist/ (SHOP_ENABLED=' + SHOP_ENABLED + ')');

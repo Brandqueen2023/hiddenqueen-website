@@ -48,6 +48,17 @@ create table if not exists rate_limit_events (
 );
 create index if not exists idx_rate_limit_scope_ip on rate_limit_events (scope, ip_hash, created_at);
 
+create table if not exists newsletter_signups (
+  id            bigserial primary key,
+  vorname       text,
+  email         text not null,
+  token         text not null unique,
+  created_at    timestamptz not null default now(),
+  confirmed_at  timestamptz
+);
+create index if not exists idx_newsletter_email on newsletter_signups (email);
+alter table newsletter_signups add column if not exists vorname text;
+
 create table if not exists analytics_events (
   id          bigserial primary key,
   name        text not null,

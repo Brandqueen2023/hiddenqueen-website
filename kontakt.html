@@ -23,7 +23,7 @@
 <main id="hq-main">
 
   <section class="hq-hero" style="min-height:46vh;">
-    <div class="hq-hero-media"><img src="/images/hero-kontakt.webp" alt="Cremefarbene Maske neben einer kupferfarbenen, geprägten Karte" style="--fp:50% 30%" srcset="/images/hero-kontakt-640.webp 640w, /images/hero-kontakt-960.webp 960w, /images/hero-kontakt-1280.webp 1280w, /images/hero-kontakt-1600.webp 1600w" sizes="100vw" fetchpriority="high"></div>
+    <div class="hq-hero-media"><img src="/images/hero-kontakt.webp" alt="Cremefarbene Maske neben einer kupferfarbenen, geprägten Karte" style="--fp:70% 90%" srcset="/images/hero-kontakt-640.webp 640w, /images/hero-kontakt-960.webp 960w, /images/hero-kontakt-1280.webp 1280w, /images/hero-kontakt-1600.webp 1600w" sizes="100vw" fetchpriority="high"></div>
     <div class="hq-hero-content">
       <h1 class="hq-h1">Manche Fragen gehören nicht in ein Fragetool.</h1>
       <p class="hq-sub" style="color:#D9CCC7;">Schreib uns so viel oder so wenig, wie sich richtig anfühlt.</p>
@@ -53,8 +53,12 @@
         <div class="hq-field">
           <label for="hq-c-topic">Anliegen</label>
           <select class="hq-select" id="hq-c-topic" name="topic" required="">
-            <option value="Private Preview">Private Preview</option>
             <option value="HiddenQueen allgemein">HiddenQueen allgemein</option>
+            <option value="Private Preview">Private Preview</option>
+            <option value="Kollektionen">Kollektionen</option>
+            <option value="Individuelle Kollektion">Individuelle Kollektion</option>
+            <option value="Manufaktur">Manufaktur</option>
+            <option value="Raumkonzept">Raumkonzept</option>
             <option value="Kooperation oder Presse">Kooperation oder Presse</option>
             <option value="Datenschutz">Datenschutz</option>
             <option value="Sonstiges">Sonstiges</option>
@@ -71,6 +75,9 @@
           <label for="hq-c-consent">Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.</label>
         </div>
 
+        <div class="g-recaptcha" data-sitekey="" id="hq-c-recaptcha" style="margin-bottom:8px;"></div>
+        <p class="hq-charcount" style="margin-bottom:20px;">Zum Absenden ist die Einwilligung in den Formularschutz (Cookie-Einstellungen) nötig.</p>
+
         <button type="submit" class="hq-btn hq-btn--primary" id="hq-c-submit">Nachricht senden</button>
         <p class="hq-form-status" id="hq-c-status" role="status" aria-live="polite"></p>
       </form>
@@ -84,6 +91,11 @@
   if (!form) return;
   document.getElementById('hq-c-started').value = Date.now();
 
+  var anliegenParam = new URLSearchParams(location.search).get('anliegen');
+  if (anliegenParam && form.topic.querySelector('option[value="' + CSS.escape(anliegenParam) + '"]')) {
+    form.topic.value = anliegenParam;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var status = document.getElementById('hq-c-status');
@@ -95,10 +107,16 @@
       message: form.message.value.trim(),
       consent: form.consent.checked,
       website: form.website.value,
-      form_started_at: form.form_started_at.value
+      form_started_at: form.form_started_at.value,
+      recaptcha_token: window.grecaptcha ? grecaptcha.getResponse() : ''
     };
     if (!data.firstname || !data.email || !data.message || !data.consent) {
       status.textContent = 'Bitte fülle alle Pflichtfelder aus und bestätige die Einwilligung.';
+      status.dataset.state = 'error';
+      return;
+    }
+    if (!data.recaptcha_token) {
+      status.textContent = 'Bitte bestätige das Sicherheits-Häkchen.';
       status.dataset.state = 'error';
       return;
     }
@@ -120,12 +138,14 @@
           status.dataset.state = 'success';
           if (window.hqTrack) window.hqTrack('contact_submit', {});
         } else {
+          if (window.grecaptcha) grecaptcha.reset();
           status.textContent = 'Das hat gerade nicht funktioniert. Deine Nachricht ist noch da. Bitte versuche es erneut.';
           status.dataset.state = 'error';
         }
       })
       .catch(function () {
         btn.disabled = false;
+        if (window.grecaptcha) grecaptcha.reset();
         status.textContent = 'Das hat gerade nicht funktioniert. Deine Nachricht ist noch da. Bitte versuche es erneut.';
         status.dataset.state = 'error';
       });

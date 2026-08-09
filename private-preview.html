@@ -17,6 +17,11 @@
   <link href="css/hq-fonts.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
+  <style>
+    /* Bessere Lesbarkeit auf der Fragetool-Seite: Überschriften außerhalb des Hero
+       (der die einzige H1 der Seite trägt) in der Fließtext-Schrift statt Careny. */
+    #hq-main .hq-h2{ font-family:var(--hq-font-body); font-weight:700; }
+  </style>
 </head>
 <body>
 <a class="hq-skip-link" href="#hq-main">Zum Inhalt springen</a>
@@ -24,7 +29,7 @@
 
   <div id="hq-preview-intro">
     <section class="hq-hero" style="min-height:64vh;">
-      <div class="hq-hero-media"><img src="/images/hero-private-preview.webp" alt="Geöffnete schwarze Box mit rosé Seidenfutter, Karte und Kerze im Hintergrund" style="--fp:50% 30%" srcset="/images/hero-private-preview-640.webp 640w, /images/hero-private-preview-960.webp 960w, /images/hero-private-preview-1280.webp 1280w, /images/hero-private-preview-1600.webp 1600w" sizes="100vw" fetchpriority="high"></div>
+      <div class="hq-hero-media"><img src="/images/hero-private-preview.webp" alt="Geöffnete schwarze Box mit rosé Seidenfutter, Karte und Kerze im Hintergrund" style="--fp:76% 95%" srcset="/images/hero-private-preview-640.webp 640w, /images/hero-private-preview-960.webp 960w, /images/hero-private-preview-1280.webp 1280w, /images/hero-private-preview-1600.webp 1600w" sizes="100vw" fetchpriority="high"></div>
       <div class="hq-hero-content">
         <span class="hq-eyebrow">PRIVATE PREVIEW</span>
         <h1 class="hq-h1">Bevor wir auswählen, möchten wir zuhören.</h1>
@@ -56,7 +61,7 @@
       </div>
     </section>
 
-    <section class="hq-section hq-section--dark">
+    <section class="hq-section hq-section--dark hq-pattern-band">
       <div class="hq-inner hq-inner--narrow hq-text-center">
         <h2 class="hq-h2">Deine Antworten müssen nicht perfekt sein.</h2>
         <p class="hq-lead hq-text-center">Es gibt kein richtiges Ergebnis. Wir möchten verstehen, welche Atmosphäre dich erreicht, welche Grenzen wichtig sind und ob eine Private Preview im Moment zu dir passt.</p>
@@ -262,6 +267,9 @@
             <input type="checkbox" id="consent_marketing" name="consent_marketing">
             <label for="consent_marketing">Ich möchte unabhängig von der Private Preview über den späteren Verkaufsstart und neue HiddenQueen Kollektionen informiert werden.</label>
           </div>
+
+          <div class="g-recaptcha" data-sitekey="" id="hq-p-recaptcha" style="margin-top:20px;"></div>
+          <p class="hq-charcount">Zum Absenden ist die Einwilligung in den Formularschutz (Cookie-Einstellungen) nötig.</p>
         </div>
 
         <div class="hq-quiz-nav">

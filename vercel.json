@@ -11,8 +11,9 @@
     { "source": "/gallery.html", "destination": "/kollektionen", "permanent": true },
     { "source": "/contact", "destination": "/kontakt", "permanent": true },
     { "source": "/contact.html", "destination": "/kontakt", "permanent": true },
-    { "source": "/library.html", "destination": "/library", "permanent": true },
-    { "source": "/article-:slug", "destination": "/library", "permanent": true }
+    { "source": "/library", "destination": "/haltung", "permanent": true },
+    { "source": "/library/", "destination": "/haltung", "permanent": true },
+    { "source": "/library/:slug", "destination": "/haltung", "permanent": true }
   ],
   "headers": [
     {

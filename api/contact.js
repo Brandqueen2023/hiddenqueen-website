@@ -1,5 +1,9 @@
 const { sendMail, esc } = require('../lib/mail');
+const { upsertContact } = require('../lib/brevo');
+const { verifyRecaptcha } = require('../lib/recaptcha');
 const { getClientIp, hashIp, honeypotTriggered, submittedTooFast, checkAndRecordRateLimit } = require('../lib/spam');
+
+const LIST_ANFRAGEN = 11; // "HQ | Anfragen"
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -12,15 +16,36 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true });
     }
 
-    const ipHash = hashIp(getClientIp(req));
+    const clientIp = getClientIp(req);
+    const ipHash = hashIp(clientIp);
     const withinLimit = await checkAndRecordRateLimit('contact', ipHash, { windowMinutes: 15, maxCount: 5 });
     if (!withinLimit) return res.status(200).json({ ok: true });
+
+    const recaptchaOk = await verifyRecaptcha(b.recaptcha_token, clientIp);
+    if (!recaptchaOk) {
+      return res.status(400).json({ ok: false, error: 'Bitte bestätige das Sicherheits-Häkchen.' });
+    }
 
     const firstname = String(b.firstname || '').trim();
     const email = String(b.email || '').trim();
     const message = String(b.message || '').trim();
     if (!firstname || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || !message || !b.consent) {
       return res.status(400).json({ ok: false, error: 'Bitte fülle die Pflichtfelder aus und bestätige die Einwilligung.' });
+    }
+
+    try {
+      await upsertContact({
+        email,
+        listIds: [LIST_ANFRAGEN],
+        attributes: {
+          VORNAME: firstname,
+          HQ_SOURCE: 'contact_form',
+          HQ_TOPIC: b.topic || undefined,
+          HQ_REQUESTED_AT: new Date().toISOString().slice(0, 10),
+        },
+      });
+    } catch (e) {
+      console.error('Brevo-Kontaktsync fehlgeschlagen:', e.message);
     }
 
     const to = process.env.HQ_MAIL_TO || 'info@brandqueen.de';

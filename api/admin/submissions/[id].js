@@ -1,7 +1,17 @@
 const { query } = require('../../../lib/db');
 const { requireAdmin } = require('../../../lib/auth');
+const { moveContactToList } = require('../../../lib/brevo');
 
 const ALLOWED_STATUS = ['Neu', 'In Prüfung', 'Rückfrage', 'Ausgewählt', 'Aktuell nicht passend', 'Abgeschlossen', 'Gelöscht'];
+
+const LIST_PP_APPLICANTS = 6;
+const LIST_PP_SELECTED = 7;
+const LIST_PP_COMPLETED = 8;
+
+const LIST_MOVE_ON_STATUS = {
+  'Ausgewählt': { addListId: LIST_PP_SELECTED, removeListId: LIST_PP_APPLICANTS },
+  'Abgeschlossen': { addListId: LIST_PP_COMPLETED, removeListId: LIST_PP_SELECTED },
+};
 
 module.exports = async (req, res) => {
   if (!requireAdmin(req, res)) return;
@@ -29,6 +39,16 @@ module.exports = async (req, res) => {
         [id, status || null, typeof internal_note === 'string' ? internal_note : null]
       );
       if (!rows.length) return res.status(404).json({ ok: false, error: 'Nicht gefunden' });
+
+      const move = status && LIST_MOVE_ON_STATUS[status];
+      if (move && rows[0].email) {
+        try {
+          await moveContactToList({ email: rows[0].email, ...move });
+        } catch (e) {
+          console.error('Brevo-Listenverschiebung fehlgeschlagen:', e.message);
+        }
+      }
+
       return res.status(200).json({ ok: true, item: rows[0] });
     }
 
