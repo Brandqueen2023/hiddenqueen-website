@@ -163,7 +163,7 @@ async function main() {
   fs.rmSync(DIST, { recursive: true, force: true });
   fs.mkdirSync(DIST, { recursive: true });
 
-  for (const dir of ['css', 'js', 'images', 'admin']) {
+  for (const dir of ['css', 'js', 'images', 'admin', 'fonts']) {
     const from = path.join(SRC, dir);
     if (fs.existsSync(from)) fs.cpSync(from, path.join(DIST, dir), { recursive: true });
   }
