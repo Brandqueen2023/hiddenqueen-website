@@ -101,7 +101,11 @@
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(shareData.url).then(function () {
         if (saveStatus) saveStatus.textContent = 'HiddenQueen ist gespeichert.';
-      }).catch(function () {});
+      }).catch(function () {
+        if (saveStatus) saveStatus.textContent = shareData.url;
+      });
+    } else if (saveStatus) {
+      saveStatus.textContent = shareData.url;
     }
   });
 })();
