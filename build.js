@@ -44,17 +44,15 @@ function buildNav($) {
   const shopOverlay = SHOP_ENABLED && SHOP_URL ? `<a href="${SHOP_URL}">Shop</a>` : '';
 
   const header = `
-<div class="hq-preloader" aria-hidden="true"><img src="/images/hiddenqueen-emblem-light.svg" alt=""></div>
+<div class="hq-preloader" aria-hidden="true"><img src="/images/hiddenqueen-logo-light.svg" alt=""></div>
 <header class="hq-header">
-  <a class="hq-logo" href="/"><img src="/images/hiddenqueen-emblem-light.svg" alt="HiddenQueen"></a>
+  <a class="hq-logo" href="/"><img src="/images/hiddenqueen-logo-light.svg" alt="HiddenQueen"></a>
   <nav class="hq-nav">
     <a href="/kollektionen">Kollektionen</a>
     <a href="/shop">Shop</a>
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
-    <a href="/library">The Queen's Library</a>
-    <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopNav}
     <a class="hq-nav-cta" href="/private-preview">Private Preview beginnen</a>
@@ -70,10 +68,9 @@ function buildNav($) {
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
-    <a href="/library">The Queen's Library</a>
-    <a href="/private-preview">Private Preview</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopOverlay}
+    <a href="/private-preview" class="hq-nav-cta">Private Preview beginnen</a>
     <a href="/kontakt">Kontakt</a>
   </nav>
 </div>`;
@@ -95,7 +92,6 @@ function buildFooter($) {
         <li><a href="/manufaktur">Manufaktur</a></li>
         <li><a href="/raumkonzepte">Raumkonzepte</a></li>
         <li><a href="/haltung">Unsere Haltung</a></li>
-        <li><a href="/library">The Queen's Library</a></li>
         <li><a href="/private-preview">Private Preview</a></li>
         <li><a href="/faq">Häufige Fragen</a></li>
         <li><a href="/kontakt">Kontakt</a></li>
@@ -104,6 +100,11 @@ function buildFooter($) {
         <li><a href="/datenschutz">Datenschutz</a></li>
       </ul>
     </nav>
+    <p class="hq-footer-social">
+      <a href="https://www.instagram.com/hiddenqueen.official" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61593099650410" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://de.pinterest.com/thehiddenqueen/" target="_blank" rel="noopener">Pinterest</a>
+    </p>
     <p class="hq-footer-copy">© <span id="hq-year">2026</span> HiddenQueen</p>
   </div>
 </footer>

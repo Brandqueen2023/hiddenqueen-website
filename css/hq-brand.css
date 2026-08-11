@@ -9,10 +9,8 @@
      Roségold hell   #E9C2B6  (heller Verlaufston, Metallic-Verlauf)
      Roségold Muster #F7E3DB  (dezentes Ornamentmuster auf hellem Grund)
      Blush Ivory     #FAF0ED  (primaerer heller Grund + Schrift auf dunkel)
-   Headline-Font laut Guide "Careny" (Envato Elements, nicht frei/oeffentlich
-   verfuegbar) – bis die lizenzierte Schriftdatei vorliegt, uebergangsweise
-   "Fraunces" (Google Fonts) als naechstliegender freier Ersatz, klar
-   dokumentiert. Fliesstext exakt wie im Guide: "Shippori Mincho".
+   Headline-Font laut CI-Manual "Careny Regular" (lizenziert, Salamahtype),
+   Fliesstext "Shippori Mincho" (Regular/Bold) – beide lokal selbst gehostet.
    ============================================================ */
 
 :root{
@@ -76,14 +74,14 @@ summary:focus-visible{
   background:linear-gradient(180deg, rgba(62,60,61,.66), rgba(62,60,61,0));
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
 }
-.hq-logo img{ height:44px !important; width:auto; }
+.hq-logo img{ height:52px !important; width:auto; }
 
 /* ---------- Signet-Vorlader (kurz, dezent, respektiert reduzierte Bewegung) ---------- */
 .hq-preloader{
   position:fixed; inset:0; z-index:20000; background:var(--hq-anthracite);
   display:flex; align-items:center; justify-content:center; transition:opacity .6s ease;
 }
-.hq-preloader img{ width:56px; height:56px; opacity:0; animation:hqPreloaderFade 1.4s ease forwards; }
+.hq-preloader img{ width:min(50vw,220px); height:auto; opacity:0; animation:hqPreloaderFade 1.4s ease forwards; }
 .hq-preloader.is-hidden{ opacity:0; pointer-events:none; }
 @keyframes hqPreloaderFade{
   0%{ opacity:0; transform:scale(.9); }
@@ -108,8 +106,8 @@ summary:focus-visible{
 .hq-pattern-band > *{ position:relative; }
 .hq-nav{ flex-wrap:wrap; row-gap:10px; }
 .hq-nav-cta{
-  font-family:var(--hq-font-body) !important; font-size:.72rem !important;
-  letter-spacing:.16em !important; text-transform:uppercase; color:var(--hq-anthracite) !important;
+  font-family:var(--hq-font-body) !important; font-size:.8rem !important;
+  letter-spacing:.14em !important; text-transform:uppercase; color:var(--hq-anthracite) !important;
   background:linear-gradient(90deg, var(--hq-rose-light), var(--hq-rose));
   padding:11px 22px; border-radius:1px; transition:filter .2s ease;
 }
@@ -123,6 +121,9 @@ summary:focus-visible{
 .hq-section--black{ background:var(--hq-black); color:var(--hq-white); }
 .hq-inner{ max-width:var(--hq-max); margin:0 auto; }
 .hq-inner--narrow{ max-width:760px; margin:0 auto; }
+
+/* Klarer visueller Trenner, z.B. vor der individuellen Kollektion */
+.hq-divider{ height:1px; max-width:120px; margin:0 auto; background:linear-gradient(90deg, transparent, var(--hq-rose), transparent); }
 
 .hq-eyebrow{
   display:block; font-family:var(--hq-font-body); font-size:.74rem; font-weight:600;
@@ -150,7 +151,7 @@ summary:focus-visible{
 /* ---------- Buttons ---------- */
 .hq-btn{
   display:inline-flex; align-items:center; gap:10px; font-family:var(--hq-font-body);
-  font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  font-size:.92rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
   padding:15px 32px; border-radius:1px; border:1px solid transparent; cursor:pointer;
   transition:filter .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
 }
@@ -179,9 +180,12 @@ summary:focus-visible{
 .hq-hero-media img{ width:100%; height:100%; object-fit:cover; object-position:var(--fp, 50% 30%); }
 .hq-hero-media::after{
   content:''; position:absolute; inset:0;
-  background:linear-gradient(0deg, rgba(10,10,10,.86) 0%, rgba(10,10,10,.32) 46%, rgba(10,10,10,.5) 100%);
+  background:
+    linear-gradient(90deg, rgba(10,10,10,.72) 0%, rgba(10,10,10,.55) 45%, rgba(10,10,10,.34) 68%, rgba(10,10,10,.24) 100%),
+    linear-gradient(0deg, rgba(10,10,10,.86) 0%, rgba(10,10,10,.32) 46%, rgba(10,10,10,.5) 100%);
 }
 .hq-hero-content{ position:relative; max-width:760px; }
+@media (min-width:1200px){ .hq-hero-content{ max-width:min(920px, 68vw); } }
 .hq-hero .hq-h1{ font-size:clamp(2.1rem, 5.6vw, 4.6rem); }
 .hq-hero-actions{ display:flex; flex-wrap:wrap; gap:20px 30px; align-items:center; margin-top:20px; }
 
@@ -267,13 +271,31 @@ summary:focus-visible{
   .hq-library-item .hq-media-45{ aspect-ratio:16/9; }
 }
 
-/* ---------- Queen's Library: "Fuer heute Abend"-Impulse am Artikelende ---------- */
-.hq-impulses{ margin:48px 0 0; padding:32px clamp(20px,4vw,36px); background:var(--hq-beige); border:1px solid var(--hq-line-light); border-radius:2px; }
-.hq-impulses-label{ font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--hq-rose-text); margin:0 0 16px; }
-.hq-impulses-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
-.hq-impulses-list li{ font-family:var(--hq-font-head); font-size:1.05rem; line-height:1.5; color:var(--hq-ink); padding-left:24px; position:relative; }
-.hq-impulses-list li::before{ content:'—'; position:absolute; left:0; color:var(--hq-rose-text); }
-@media (max-width:480px){ .hq-impulses{ padding:24px 20px; } .hq-impulses-list li{ font-size:.98rem; } }
+/* ---------- Kollektionen-Seite: asymmetrisches Mosaik (Bild+Name traegt, Text bleibt leise) ---------- */
+.hq-mosaic{ display:grid; grid-template-columns:repeat(6, 1fr); gap:clamp(28px,4vw,44px) var(--hq-gap); }
+.hq-mosaic-item{ grid-column:span 3; }
+.hq-mosaic-item.hq-mosaic-md{ grid-column:span 2; }
+.hq-mosaic-media{ position:relative; display:block; overflow:hidden; border-radius:2px; aspect-ratio:4/5; }
+.hq-mosaic-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:var(--fp, 50% 50%); transition:transform .6s ease; }
+.hq-mosaic-item:hover .hq-mosaic-media img{ transform:scale(1.03); }
+.hq-mosaic-media::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(10,8,7,.7) 0%, rgba(10,8,7,0) 44%);
+  pointer-events:none;
+}
+.hq-mosaic-name{
+  position:absolute; left:0; right:0; bottom:0; z-index:1; margin:0;
+  padding:clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px) 12px;
+  font-family:var(--hq-font-head); color:var(--hq-white);
+  font-size:clamp(1.05rem, 1.8vw, 1.4rem); letter-spacing:.02em; font-weight:500;
+}
+.hq-mosaic-claim{ font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.04em; color:var(--hq-rose-text); margin:16px 0 6px; }
+.hq-mosaic-text{ font-family:var(--hq-font-body); font-size:.88rem; line-height:1.62; color:var(--hq-ink-soft); margin:0; }
+@media (max-width:760px){
+  .hq-mosaic{ grid-template-columns:1fr 1fr; }
+  .hq-mosaic-item, .hq-mosaic-item.hq-mosaic-md{ grid-column:span 1; }
+}
+@media (max-width:520px){ .hq-mosaic{ grid-template-columns:1fr; } }
 
 /* ---------- Kollektionskarten ---------- */
 .hq-cards{
@@ -299,7 +321,8 @@ summary:focus-visible{
 .hq-section--dark .hq-faq details, .hq-section--black .hq-faq details{ border-color:var(--hq-line-dark); }
 .hq-faq summary{
   cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between;
-  gap:20px; font-family:var(--hq-font-head); font-size:1.15rem; font-weight:500;
+  gap:20px; font-family:var(--hq-font-body); font-size:1.32rem; font-weight:400;
+  color:var(--hq-black); letter-spacing:.008em; text-shadow:0 0 .35px currentColor;
 }
 .hq-faq summary::-webkit-details-marker{ display:none; }
 .hq-faq summary::after{
@@ -308,7 +331,11 @@ summary:focus-visible{
 }
 .hq-section--dark .hq-faq summary::after, .hq-section--black .hq-faq summary::after{ color:var(--hq-rose); }
 .hq-faq details[open] summary::after{ transform:rotate(45deg); }
-.hq-faq .hq-faq-a{ padding-top:14px; font-family:var(--hq-font-body); font-size:.98rem; line-height:1.75; max-width:70ch; }
+.hq-faq .hq-faq-a{
+  padding-top:14px; font-family:var(--hq-font-body); font-size:1.05rem; font-weight:400;
+  color:var(--hq-black); letter-spacing:.006em; line-height:1.8; max-width:66ch;
+  text-shadow:0 0 .35px currentColor;
+}
 
 /* ---------- Formulare (Kontakt + Private Preview) ---------- */
 .hq-field{ margin-bottom:22px; text-align:left; }
@@ -352,7 +379,7 @@ summary:focus-visible{
 .hq-quiz-step{ display:none; }
 .hq-quiz-step.is-active{ display:block; animation:hqFade .4s ease; }
 @keyframes hqFade{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
-.hq-quiz-question{ font-family:var(--hq-font-head); font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 8px; }
+.hq-quiz-question{ font-family:var(--hq-font-body); font-weight:700; font-size:clamp(1.25rem,2.6vw,1.6rem); line-height:1.4; margin:0 0 8px; }
 .hq-quiz-hint{ font-size:.86rem; color:var(--hq-ink-soft); margin:0 0 22px; }
 .hq-section--dark .hq-quiz-hint, .hq-section--black .hq-quiz-hint{ color:var(--hq-ink-soft-on-dark); }
 .hq-quiz-options{ display:flex; flex-direction:column; gap:12px; margin-bottom:30px; }
@@ -391,10 +418,10 @@ summary:focus-visible{
 .hq-footer-links ul{ list-style:none; display:flex; flex-wrap:wrap; justify-content:center; gap:22px 30px; padding:0; margin:0 0 32px; }
 .hq-footer-links a{ color:var(--hq-ink-soft-on-dark); text-decoration:none; font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; }
 .hq-footer-links a:hover{ color:var(--hq-rose); }
+.hq-footer-social{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; margin:0 0 18px; }
+.hq-footer-social a{ color:var(--hq-ink-soft-on-dark); text-decoration:none; font-family:var(--hq-font-body); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; }
+.hq-footer-social a:hover{ color:var(--hq-rose); }
 .hq-footer-copy{ font-family:var(--hq-font-body); font-size:.78rem; color:#8f8681; margin:0; }
-
-/* ---------- 404 ---------- */
-.hq-404{ min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:160px 24px 100px; }
 
 /* ---------- Manufaktur / Raumkonzepte: dezente "nur auf Anfrage"-Kennzeichnung ---------- */
 .hq-tag-subtle{
@@ -414,6 +441,11 @@ summary:focus-visible{
 .hq-editorial-item p{ font-family:var(--hq-font-body); font-size:.98rem; line-height:1.7; color:var(--hq-ink-soft); margin:0; }
 .hq-section--dark .hq-editorial-item p, .hq-section--black .hq-editorial-item p{ color:var(--hq-ink-soft-on-dark); }
 
+/* Begriffe als flieszender Satz statt Icon-Liste (Manufaktur Abschnitt 2) */
+.hq-term-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:0; margin:40px auto 0; max-width:640px; font-family:var(--hq-font-head); font-style:italic; font-size:1.15rem; color:var(--hq-rose-text); }
+.hq-section--dark .hq-term-row, .hq-section--black .hq-term-row{ color:var(--hq-rose); }
+.hq-term-row span:not(:last-child)::after{ content:'·'; margin:0 14px; opacity:.5; font-style:normal; }
+
 /* Nummerierte Schritte, ruhig statt Verkaufstrichter (Prozess-Abschnitte) */
 .hq-steps{ max-width:760px; margin:48px auto 0; display:flex; flex-direction:column; gap:36px; }
 .hq-step{ display:grid; grid-template-columns:56px 1fr; gap:20px; align-items:start; }
@@ -423,11 +455,6 @@ summary:focus-visible{
 .hq-step p{ font-family:var(--hq-font-body); font-size:.96rem; line-height:1.7; color:var(--hq-ink-soft); margin:0; }
 .hq-section--dark .hq-step p, .hq-section--black .hq-step p{ color:var(--hq-ink-soft-on-dark); }
 @media (max-width:520px){ .hq-step{ grid-template-columns:40px 1fr; } .hq-step-num{ font-size:1.3rem; } }
-
-/* Begriffe als flieszender Satz statt Icon-Liste (Manufaktur Abschnitt 2) */
-.hq-term-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:0; margin:40px auto 0; max-width:640px; font-family:var(--hq-font-head); font-style:italic; font-size:1.15rem; color:var(--hq-rose-text); }
-.hq-section--dark .hq-term-row, .hq-section--black .hq-term-row{ color:var(--hq-rose); }
-.hq-term-row span:not(:last-child)::after{ content:'·'; margin:0 14px; opacity:.5; font-style:normal; }
 
 /* Zwei ruhige Zugaenge (Startseite "Ueber die Kollektionen hinaus") */
 .hq-gateways{ display:grid; grid-template-columns:1fr 1fr; gap:var(--hq-gap); margin-top:48px; }
@@ -439,3 +466,14 @@ summary:focus-visible{
 .hq-gateway-name{ font-family:var(--hq-font-head); color:var(--hq-white); font-size:clamp(1.2rem,2.2vw,1.6rem); margin:0 0 8px; }
 .hq-gateway-text{ font-family:var(--hq-font-body); color:var(--hq-ink-soft-on-dark); font-size:.9rem; line-height:1.6; margin:0 0 14px; max-width:32ch; }
 @media (max-width:700px){ .hq-gateways{ grid-template-columns:1fr; } }
+
+/* ---------- 404 ---------- */
+.hq-404{ min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:160px 24px 100px; }
+
+/* ---------- Queen's Library: "Fuer heute Abend"-Impulse am Artikelende ---------- */
+.hq-impulses{ margin:48px 0 0; padding:32px clamp(20px,4vw,36px); background:var(--hq-beige); border:1px solid var(--hq-line-light); border-radius:2px; }
+.hq-impulses-label{ font-family:var(--hq-font-body); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--hq-rose-text); margin:0 0 16px; }
+.hq-impulses-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+.hq-impulses-list li{ font-family:var(--hq-font-head); font-size:1.05rem; line-height:1.5; color:var(--hq-ink); padding-left:24px; position:relative; }
+.hq-impulses-list li::before{ content:'—'; position:absolute; left:0; color:var(--hq-rose-text); }
+@media (max-width:480px){ .hq-impulses{ padding:24px 20px; } .hq-impulses-list li{ font-size:.98rem; } }
