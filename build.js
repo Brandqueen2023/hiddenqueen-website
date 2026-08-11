@@ -169,6 +169,7 @@ async function main() {
     if (fs.existsSync(from)) fs.cpSync(from, path.join(DIST, dir), { recursive: true });
   }
   for (const f of fs.readdirSync(SRC)) {
+    if (/^live-/.test(f)) continue; // keine echte Asset-Datei, nur lokale Vergleichsdatei
     if (/\.(ico|png|svg|webmanifest|xml|txt)$/i.test(f)) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
   }
 
@@ -188,6 +189,7 @@ async function main() {
 
   for (const page of fs.readdirSync(SRC)) {
     if (!page.endsWith('.html')) continue;
+    if (/^(live-|dist-)/.test(page) || /\.norm\.html$/.test(page)) continue; // keine echten Seiten, nur lokale Vergleichsdateien
     buildPage(path.join(SRC, page), path.join(DIST, page));
     console.log('✓', page);
   }
