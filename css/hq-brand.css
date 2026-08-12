@@ -466,6 +466,9 @@ summary:focus-visible{
 .hq-gateway-name{ font-family:var(--hq-font-head); color:var(--hq-white); font-size:clamp(1.2rem,2.2vw,1.6rem); margin:0 0 8px; }
 .hq-gateway-text{ font-family:var(--hq-font-body); color:var(--hq-ink-soft-on-dark); font-size:.9rem; line-height:1.6; margin:0 0 14px; max-width:32ch; }
 @media (max-width:700px){ .hq-gateways{ grid-template-columns:1fr; } }
+.hq-gateways--three{ grid-template-columns:repeat(3,1fr); }
+@media (max-width:900px){ .hq-gateways--three{ grid-template-columns:1fr 1fr; } }
+@media (max-width:520px){ .hq-gateways--three{ grid-template-columns:1fr; } }
 
 /* ---------- 404 ---------- */
 .hq-404{ min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:160px 24px 100px; }
