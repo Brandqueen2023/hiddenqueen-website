@@ -53,6 +53,7 @@ function buildNav($) {
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
+    <a href="/library">The Queen's Library</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopNav}
     <a class="hq-nav-cta" href="/private-preview">Private Preview beginnen</a>
@@ -68,6 +69,7 @@ function buildNav($) {
     <a href="/manufaktur">Manufaktur</a>
     <a href="/raumkonzepte">Raumkonzepte</a>
     <a href="/haltung">Unsere Haltung</a>
+    <a href="/library">The Queen's Library</a>
     <a href="/faq">Häufige Fragen</a>
     ${shopOverlay}
     <a href="/private-preview" class="hq-nav-cta">Private Preview beginnen</a>
@@ -92,6 +94,7 @@ function buildFooter($) {
         <li><a href="/manufaktur">Manufaktur</a></li>
         <li><a href="/raumkonzepte">Raumkonzepte</a></li>
         <li><a href="/haltung">Unsere Haltung</a></li>
+        <li><a href="/library">The Queen's Library</a></li>
         <li><a href="/private-preview">Private Preview</a></li>
         <li><a href="/faq">Häufige Fragen</a></li>
         <li><a href="/kontakt">Kontakt</a></li>
