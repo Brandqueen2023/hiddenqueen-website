@@ -6,6 +6,8 @@ const ALLOWED = new Set([
   'contact_submit', 'future_shop_click',
   'hq_qr_variant_view', 'hq_qr_hero_cta', 'hq_qr_preview_click',
   'hq_qr_library_click', 'hq_qr_collections_click', 'hq_qr_email_submit',
+  'private_preview_start_click', 'newsletter_signup', 'shop_signup',
+  'manufaktur_submit', 'raumkonzept_submit',
 ]);
 
 module.exports = async (req, res) => {
