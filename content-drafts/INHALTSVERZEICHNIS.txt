@@ -1,0 +1,35 @@
+INHALTSVERZEICHNIS — content-drafts/
+Stand: 12.10.2026. Dieser Ordner wird von build.js NICHT gelesen und hat daher
+keinerlei Wirkung auf die Live-Seite thehiddenqueen.de. Alles hier ist Entwurf
+bzw. interne Vorbereitung, nichts davon ist veröffentlicht.
+
+PRODUKTENTWICKLUNG THE INVITATION (Runde 4)
+- produktdaten-the-invitation.json   Strukturierte Produktdaten, offene Felder klar markiert
+- kalkulation-the-invitation.xlsx    Leere Kalkulationsvorlage mit Formeln (EK, Konfektionierung, Versand, Deckungsbeitrag)
+- build-kalkulation.js               Erzeugt obige xlsx (Node/exceljs), nur bei Bedarf erneut ausführen
+
+KOMMUNIKATIONSENTWÜRFE (ChatGPT-Briefing, Runde 2)
+- markenstory.txt                    Gründerstory, Haupt- + 5 Kurzfassungen
+- produkttext-the-invitation.txt     Produkttext-Entwurf The Invitation
+- produkttext-blind-trust.txt        Produkttext-Entwurf Blind Trust
+- produkttext-after-midnight.txt     Produkttext-Entwurf After Midnight (ChatGPT-Fassung, ACHTUNG: Claim wurde
+                                      für die Detailseite auf den Original-Claim umgestellt, siehe unten)
+- newsletter-serie.txt               4 Newsletter-Mails
+- pr-ansprachewinkel.txt             3 PR-Ansprachewinkel + Kontaktvorlage
+- kampagnenplan-woche1.txt           30-Tage-Kampagne, Woche 1 ausgearbeitet
+- abgleich-bestehende-seiten.txt     Abgleich ChatGPT-Entwürfe gegen Live-Seite (Claim-Konflikt bei After Midnight dokumentiert)
+
+KOLLEKTIONS-DETAILSEITEN — UNVERÖFFENTLICHT (Runde 3)
+- detailseite-the-invitation.src.html
+- detailseite-blind-trust.src.html
+- detailseite-after-midnight.src.html   (trägt den Original-Claim "Der Abend gehört nur noch euch.",
+                                          NICHT den ChatGPT-Claim)
+- build-preview.js                      Eigenständiges Vorschau-Skript (nutzt build.js NICHT), rendert
+                                         die 3 Seiten mit echtem Header/Footer nach preview/
+- preview/                              Gerenderte Vorschau der 3 Detailseiten (lokal ansehbar)
+
+ANALYTICS-FIX (Runde 3/4, isoliert auf Branch preview/analytics-fix)
+- test-analytics-allowlist.js        Lokaler Test der Allowlist-Logik (läuft nicht gegen echte DB/API)
+
+STATUS ALLER OFFENEN FREIGABEN: siehe Claude-Docs-Dokument "The Hiddenqueen — Technischer Audit",
+Reiter "Runde 4: A/B/C" und "Runde 5" (laufend aktualisiert).
