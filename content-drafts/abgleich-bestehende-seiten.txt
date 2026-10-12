@@ -1,0 +1,24 @@
+ABGLEICH: ChatGPT-Entwürfe (12.10.2026) vs. tatsächlich live stehende Texte auf kollektionen.html
+Geprüft: kollektionen.html (einzige Stelle mit Kollektionstexten — es gibt KEINE separaten Produktdetailseiten pro Kollektion, nur kurze Mosaik-Einträge auf einer gemeinsamen Seite).
+
+WICHTIGSTE STRUKTURELLE ERKENNTNIS:
+Die ChatGPT-Entwürfe sind als vollständige Produktdetailseiten geschrieben (Headline, Fließtext, Bullet-Liste, Bestandteile, FAQ, Bestellaufruf). Auf der Live-Seite existiert dafür aktuell KEIN Zielort — kollektionen.html hat je Kollektion nur: Bild, Name, einen kurzen Claim (1 Zeile) und einen kurzen Fließtext (1-2 Sätze). Bevor die langen Entwürfe sinnvoll verwendet werden können, müsste entschieden werden, ob eigene Detailseiten pro Kollektion gebaut werden (z. B. /kollektionen/the-invitation) — das wäre eine Struktur-Erweiterung und braucht Freigabe, nicht nur einen Text-Austausch.
+
+THE INVITATION — ÜBEREINSTIMMUNG
+- Live-Claim: "Der erste Schritt." / Live-Subline: "Der Abend beginnt mit einer Einladung. Was daraus wird, entscheidet ihr selbst."
+- ChatGPT-Entwurf: identische Formulierungen als Headline/Subline übernommen.
+- WORTWÖRTLICHE ÜBEREINSTIMMUNG — kein Konflikt. Zusätzlich trägt der Library-Artikel library/der-erste-schritt.html denselben Titel — die Marke nutzt "Der erste Schritt." bereits markenübergreifend für The Invitation.
+- Ergänzungspotenzial: Die ausführlicheren Bestandteile aus der Arbeitsnotiz (versiegelter Brief, Schlüsselobjekt etc.) stehen aktuell nirgends auf der Live-Seite — nur Stimmungstext, kein Produktinhalt sichtbar.
+
+BLIND TRUST — WEITGEHENDE ÜBEREINSTIMMUNG
+- Live-Claim: "Vertrauen beginnt dort, wo Kontrolle endet." — WORTWÖRTLICH identisch mit ChatGPT-Headline.
+- Live-Subline: "Aus der Einladung wird eine bewusste Entscheidung. Vertrauen beginnt, bevor man weiß, was kommt." — NICHT identisch mit dem ChatGPT-Fließtext, aber thematisch stimmig (beide: Vertrauen, bewusste Entscheidung). Kein Widerspruch, nur unterschiedliche Formulierung.
+
+AFTER MIDNIGHT — ECHTE ABWEICHUNG, nicht nur Ergänzung
+- Live-Claim: "Der Abend gehört nur noch euch." / Live-Subline: "Die Nacht geht weiter. Im Dunkeln wird anderes deutlicher."
+- ChatGPT-Headline: "Wenn der Alltag in den Hintergrund tritt." — ANDERER Fokus (Alltag/Entschleunigung statt Nacht/Dunkelheit-Motiv).
+- Beide passen für sich zum Markenton, sind aber NICHT gleichzeitig verwendbar ohne Entscheidung, welcher Claim gilt. Vorschlag (nur Vorschlag, keine Umsetzung): entweder den ChatGPT-Claim als neue Headline für eine künftige Detailseite verwenden und den Live-Claim als kurze Mosaik-Subline behalten, oder umgekehrt — das ist eine redaktionelle Entscheidung, keine technische.
+
+NICHT ABGEDECKTE KOLLEKTIONEN: Queen's Ritual, Secret Drawer, Seven Senses, The Surrender haben keine ChatGPT-Entwürfe in dieser Runde erhalten — ihre Live-Texte bleiben unverändert und unkommentiert.
+
+KEINE ÄNDERUNG an kollektionen.html vorgenommen — reine Beobachtung.
