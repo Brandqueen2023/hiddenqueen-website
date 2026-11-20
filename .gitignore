@@ -5,3 +5,18 @@ dist/
 _srv*.js
 .vercel
 .env*
+
+# Alte Fehlablagen aus einem frueheren kaputten Shell-Lauf, nicht geloescht,
+# nur ausgeblendet, damit der Deploy-Sauberkeits-Check von publish.mjs
+# wieder anschlaegt. Siehe _aufraeumen-2026-11-20/.
+(v
+App-Ausf*
+console.error*
+console.log*
+ÔÇ×Wir
+.verify-tmp/
+_aufraeumen-2026-11-20/
+
+# Absichtlich abgelegte Analyse, von build.js nicht gelesen, siehe Memory
+# project_hiddenqueen_website_relaunch.
+content-drafts/
